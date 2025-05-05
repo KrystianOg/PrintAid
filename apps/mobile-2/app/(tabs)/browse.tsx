@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import type { ProductListItem } from "@/types/products";
-import { wait } from "@/utils/wait";
+import { fetch } from "@/lib/fetch";
 
 const GAP = 8;
 
@@ -29,12 +29,14 @@ export default function Browse() {
     }, 2000);
   }, []);
 
-  const loadProducts = useCallback(async (): ProductListItem[] => {
-    await wait(300);
+  const loadProducts = useCallback(async (): Promise<ProductListItem[]> => {
+    return fetch<ProductListItem[]>("/products");
   }, []);
 
   useEffect(() => {
-    loadProducts();
+    loadProducts().then((products) => {
+      setProducts(products);
+    });
   }, [loadProducts]);
 
   const categories = ["Category 1", "Category 2", "Category 3"];
@@ -76,26 +78,26 @@ export default function Browse() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           numColumns={2}
-          data={Array.from({ length: 25 })}
-          renderItem={({ index }) => (
-            // <Pressable
-            //   key={index}
-            //   style={{
-            //     width: "49%",
-            //     height: 250,
-            //     backgroundColor: "lightgray",
-            //     justifyContent: "center",
-            //     alignItems: "center",
-            //   }}
-            // >
-            //   <Text>{index}</Text>
-            // </Pressable>
+          data={products}
+          renderItem={({ item: product }) => (
             <Link
               href={{
                 pathname: "/products/[id]",
-                params: { id: index },
+                params: { id: product.id },
               }}
-            />
+              style={{
+                width: "49%",
+                height: 250,
+                backgroundColor: "lightgray",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>{product.name}</Text>
+              <Text>{product.price}</Text>
+              <Text>{product.description}</Text>
+              <Text>{product.name}</Text>
+            </Link>
           )}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={{

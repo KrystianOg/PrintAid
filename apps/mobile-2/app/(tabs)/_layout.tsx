@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { colors } from "@/constants/colors";
+import { colors } from "@/constants/theme";
 import { Image } from "react-native";
 
 import icon from "@/assets/images/react-logo.png";
