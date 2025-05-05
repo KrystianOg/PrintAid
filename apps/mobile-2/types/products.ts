@@ -1,4 +1,4 @@
-export type Product = {
+export interface Product {
   id: string;
   name: string;
   price: number;
@@ -13,7 +13,7 @@ export type Product = {
   realizationTime?: string;
   tags: string[];
   meta?: unknown;
-};
+}
 
 export type ProductListItem = Pick<
   Product,

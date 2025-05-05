@@ -1,11 +1,11 @@
 import { useAsyncStorage } from "@/hooks/useAsyncStorage";
 
-export type CartItem = {
+export interface CartItem {
   id: string;
   name: string;
   price: number;
   quantity: number;
-};
+}
 
 export const useCart = () => {
   const [items, setItems] = useAsyncStorage<CartItem[]>("cart", []);
