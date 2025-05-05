@@ -9,6 +9,7 @@ export const colors = {
   text: "#000000",
   disabled: "rgba(0, 0, 0, 0.38)",
   placeholder: "rgba(0, 0, 0, 0.54)",
+  gray: "#ccc", // TODO: change this
 };
 
 export const spacing = (factor: number): number => factor * 8;
