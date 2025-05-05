@@ -1,0 +1,357 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Product 1",
+      "price": 29.99,
+      "description": "Description for Product 1",
+      "category": "Category 1",
+      "image": "image1.png",
+      "stock": 100,
+      "discount": 10,
+      "availability": "In Stock",
+      "similar": [
+        "Product 2",
+        "Product 3"
+      ],
+      "related": [
+        "Product 4",
+        "Product 5"
+      ],
+      "realizationTime": "2-3 days",
+      "tags": [
+        "tag1",
+        "tag2"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Product 2",
+      "price": 39.99,
+      "description": "Description for Product 2",
+      "category": "Category 1",
+      "image": "image2.png",
+      "stock": 50,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 3"
+      ],
+      "related": [
+        "Product 4",
+        "Product 5"
+      ],
+      "realizationTime": "1-2 days",
+      "tags": [
+        "tag1",
+        "tag3"
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Product 3",
+      "price": 19.99,
+      "description": "Description for Product 3",
+      "category": "Category 2",
+      "image": "image3.png",
+      "stock": 200,
+      "discount": 0,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 4",
+        "Product 5"
+      ],
+      "realizationTime": "3-5 days",
+      "tags": [
+        "tag2",
+        "tag4"
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Product 4",
+      "price": 49.99,
+      "description": "Description for Product 4",
+      "category": "Category 3",
+      "image": "image4.png",
+      "stock": 75,
+      "discount": 15,
+      "availability": "Out of Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 5"
+      ],
+      "realizationTime": "5-7 days",
+      "tags": [
+        "tag1",
+        "tag5"
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Product 5",
+      "price": 59.99,
+      "description": "Description for Product 5",
+      "category": "Category 3",
+      "image": "image5.png",
+      "stock": 30,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "2-4 days",
+      "tags": [
+        "tag3",
+        "tag6"
+      ]
+    },
+    {
+      "id": "6",
+      "name": "Product 6",
+      "price": 15.99,
+      "description": "Description for Product 6",
+      "category": "Category 2",
+      "image": "image6.png",
+      "stock": 150,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "1-2 days",
+      "tags": [
+        "tag1",
+        "tag7"
+      ]
+    },
+    {
+      "id": "7",
+      "name": "Product 7",
+      "price": 25.99,
+      "description": "Description for Product 7",
+      "category": "Category 1",
+      "image": "image7.png",
+      "stock": 80,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "2-3 days",
+      "tags": [
+        "tag2",
+        "tag8"
+      ]
+    },
+    {
+      "id": "8",
+      "name": "Product 8",
+      "price": 35.99,
+      "description": "Description for Product 8",
+      "category": "Category 2",
+      "image": "image8.png",
+      "stock": 60,
+      "discount": 0,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "3-5 days",
+      "tags": [
+        "tag3",
+        "tag9"
+      ]
+    },
+    {
+      "id": "9",
+      "name": "Product 9",
+      "price": 45.99,
+      "description": "Description for Product 9",
+      "category": "Category 3",
+      "image": "image9.png",
+      "stock": 40,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "2-4 days",
+      "tags": [
+        "tag4",
+        "tag10"
+      ]
+    },
+    {
+      "id": "10",
+      "name": "Product 10",
+      "price": 55.99,
+      "description": "Description for Product 10",
+      "category": "Category 3",
+      "image": "image10.png",
+      "stock": 20,
+      "discount": 20,
+      "availability": "Out of Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "5-7 days",
+      "tags": [
+        "tag5",
+        "tag11"
+      ]
+    },
+    {
+      "id": "11",
+      "name": "Product 11",
+      "price": 65.99,
+      "description": "Description for Product 11",
+      "category": "Category 1",
+      "image": "image11.png",
+      "stock": 10,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "1-2 days",
+      "tags": [
+        "tag6",
+        "tag12"
+      ]
+    },
+    {
+      "id": "12",
+      "name": "Product 12",
+      "price": 75.99,
+      "description": "Description for Product 12",
+      "category": "Category 2",
+      "image": "image12.png",
+      "stock": 15,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "2-3 days",
+      "tags": [
+        "tag7",
+        "tag13"
+      ]
+    },
+    {
+      "id": "13",
+      "name": "Product 13",
+      "price": 85.99,
+      "description": "Description for Product 13",
+      "category": "Category 3",
+      "image": "image13.png",
+      "stock": 5,
+      "availability": "Out of Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "5-7 days",
+      "tags": [
+        "tag8",
+        "tag14"
+      ]
+    },
+    {
+      "id": "14",
+      "name": "Product 14",
+      "price": 95.99,
+      "description": "Description for Product 14",
+      "category": "Category 1",
+      "image": "image14.png",
+      "stock": 8,
+      "availability": "In Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "2-4 days",
+      "tags": [
+        "tag9",
+        "tag15"
+      ]
+    },
+    {
+      "id": "15",
+      "name": "Product 15",
+      "price": 105.99,
+      "description": "Description for Product 15",
+      "category": "Category 2",
+      "image": "image15.png",
+      "stock": 3,
+      "availability": "Out of Stock",
+      "similar": [
+        "Product 1",
+        "Product 2"
+      ],
+      "related": [
+        "Product 3",
+        "Product 4"
+      ],
+      "realizationTime": "5-7 days",
+      "tags": [
+        "tag10",
+        "tag16"
+      ]
+    },
+    {
+      "id": "639a"
+    }
+  ]
+}
