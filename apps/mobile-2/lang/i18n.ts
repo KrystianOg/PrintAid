@@ -10,7 +10,7 @@ export const resources = {
 
 export const defaultNS = "common";
 
-i18n.use(initReactI18next).init({
+void i18n.use(initReactI18next).init({
   resources,
   lng: "en",
   defaultNS,

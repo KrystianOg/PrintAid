@@ -11,10 +11,10 @@ export const useCart = () => {
   const [items, setItems] = useAsyncStorage<CartItem[]>("cart", []);
 
   const addItem = (item: CartItem): void => {
-    setItems((prevItems) => {
-      const existingItem = prevItems?.find((i) => i.id === item.id);
+    void setItems((prevItems) => {
+      const existingItem = prevItems.find((i) => i.id === item.id);
       if (existingItem) {
-        return prevItems?.map((i) =>
+        return prevItems.map((i) =>
           i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
         );
       }
@@ -23,11 +23,11 @@ export const useCart = () => {
   };
 
   const removeItem = (id: string): void => {
-    setItems((prevItems) => prevItems.filter((i) => i.id !== id));
+    void setItems((prevItems) => prevItems.filter((i) => i.id !== id));
   };
 
   const clearCart = (): void => {
-    setItems([]);
+    void setItems([]);
   };
 
   return { items, addItem, removeItem, clearCart };

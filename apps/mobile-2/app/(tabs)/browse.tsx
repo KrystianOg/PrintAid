@@ -34,9 +34,11 @@ export default function Browse() {
   }, []);
 
   useEffect(() => {
-    loadProducts().then((products) => {
-      setProducts(products);
-    });
+    loadProducts()
+      .then((products) => {
+        setProducts(products);
+      })
+      .catch(console.error);
   }, [loadProducts]);
 
   const categories = ["Category 1", "Category 2", "Category 3"];

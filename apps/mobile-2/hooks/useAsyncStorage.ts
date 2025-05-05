@@ -8,7 +8,7 @@ export const useAsyncStorage = <T>(key: string, defaultValue: T) => {
     try {
       const value = await AsyncStorage.getItem(key);
       if (value !== null) {
-        const parsedValue = JSON.parse(value);
+        const parsedValue = JSON.parse(value) as T;
         return parsedValue;
       }
     } catch (err) {
@@ -18,9 +18,14 @@ export const useAsyncStorage = <T>(key: string, defaultValue: T) => {
   }, [key]);
 
   useEffect(() => {
-    getItem().then((value) => {
-      _setState(value ?? defaultValue);
-    });
+    getItem()
+      .then((value) => {
+        _setState(value ?? defaultValue);
+      })
+      .catch((err: unknown) => {
+        console.error(err);
+        _setState(defaultValue);
+      });
   }, [getItem, defaultValue]);
 
   const setState = useCallback(

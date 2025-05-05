@@ -9,10 +9,18 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   eslint.configs.recommended,
-  tseslint.configs.strict,
-  tseslint.configs.stylistic,
-  reactPlugin.configs.flat?.recommended,
-  reactPlugin.configs.flat?.["jsx-runtime"],
+  tseslint.configs.strictTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  tseslint.configs.stylisticTypeChecked,
+  reactPlugin.configs.flat.recommended,
+  reactPlugin.configs.flat["jsx-runtime"],
   tsPlugin.configs.recommended,
   {
     plugins: {
@@ -26,6 +34,15 @@ export default tseslint.config(
       ...prettierConfig.rules,
       ...pluginReactNative.configs.all.rules,
       "react-native/no-inline-styles": "warn",
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        {
+          allowNumber: true,
+          allowBoolean: true,
+          allowNullish: true,
+          allowAny: false,
+        },
+      ],
     },
     settings: {
       react: {
@@ -33,5 +50,5 @@ export default tseslint.config(
       },
     },
   },
-  globalIgnores([".expo", "node_modules"])
+  globalIgnores([".expo", "node_modules", "*.config.mjs"])
 );

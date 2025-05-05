@@ -7,15 +7,13 @@ const _fetch = async <T>(input: FetchParams[0], init?: FetchParams[1]) => {
 
   const result = await globalThis.fetch(_input, init);
 
-  const data = await result.json();
+  const data = (await result.json()) as T;
 
   if (!result.ok) {
-    throw new Error(
-      `Error ${result.status}: ${data.message || data.error || "Unknown error"}`
-    );
+    throw new Error(`Error ${result.status}: ${result.statusText}`);
   }
 
-  return data as T;
+  return data;
 };
 
 export { _fetch as fetch };
