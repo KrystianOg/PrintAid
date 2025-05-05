@@ -1,41 +1,46 @@
 import { useLocalSearchParams } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text } from "react-native";
+import type { Product } from "@/types/products";
 
-interface ProductDetailProps {
-  id: string[];
-  name: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: number;
-  stock: number;
-  discount: number;
-  availability: string;
-  similar: string[];
-  related: string[];
-  tags: string[];
-  meta: unknown;
-}
-
-export default function ProductDetail({
-  name,
-  price,
-  description,
-  category,
-  similar,
-  related,
-  availability,
-}: ProductDetailProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id } = useLocalSearchParams();
+export default function ProductDetail() {
+  const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation("product");
 
+  const [product, setProduct] = useState<Product>();
+
   useEffect(() => {
-    // TODO: load some images etc
-  }, []);
+    setTimeout(() => {
+      const product: Product = {
+        id,
+        name: "Product Name",
+        price: 100,
+        description: "Product Description",
+        category: "Category",
+        image: "https://via.placeholder.com/150",
+        rating: 4.5,
+        stock: 10,
+        discount: 0,
+        availability: "In Stock",
+        similar: ["Similar Product 1", "Similar Product 2"],
+        related: ["Related Product 1", "Related Product 2"],
+        realizationTime: "2 days",
+        tags: ["tag1", "tag2"],
+        meta: {},
+      };
+
+      setProduct(product);
+    }, 700);
+  }, [id]);
+
+  if (!product) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ fontSize: 24 }}>{t("loading", { ns: "common" })}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, padding: 10 }}>
@@ -56,26 +61,28 @@ export default function ProductDetail({
         </Text>
       </View>
       <Text style={{ fontSize: 16 }}>
-        {t("name")} {name}
+        {t("name")} {product.name}
       </Text>
       <Text style={{ fontSize: 16 }}>
-        {t("price")}: {price}
+        {t("price")}: {product.price}
       </Text>
       <Text style={{ fontSize: 16 }}>
-        {t("description")} {description}
+        {t("description")} {product.description}
       </Text>
       <Text style={{ fontSize: 16 }}>
-        {t("category")} {category}
+        {t("category")} {product.category}
       </Text>
       <Text style={{ fontSize: 16 }}>
-        {t("similar")} {similar}
+        {t("similar")} {product.similar.join(", ")}
       </Text>
       <Text style={{ fontSize: 16 }}>
-        {t("related")} {related}
+        {t("related")} {product.related.join(", ")}
       </Text>
-      <Text style={{ fontSize: 16 }}>
-        {t("realizationTime")} {availability}
-      </Text>
+      {!!product.realizationTime && (
+        <Text style={{ fontSize: 16 }}>
+          {t("realizationTime")} {product.realizationTime}
+        </Text>
+      )}
     </View>
   );
 }

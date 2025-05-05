@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Pressable,
   RefreshControl,
@@ -6,6 +6,7 @@ import {
   Text,
   View,
   StyleSheet,
+  FlatList,
 } from "react-native";
 // import { Alert, LogBox, Platform } from "react-native";
 // import { StatusBar } from "expo-status-bar";
@@ -20,6 +21,28 @@ import { Link } from "expo-router";
 export default function Index() {
   const { t } = useTranslation("home");
   const [refreshing, setRefreshing] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
+
+  const [popular, setPopular] = useState<string[]>([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCategories([
+        "Category 1",
+        "Category 2",
+        "Category 3",
+        "Category 4",
+        "Category 5",
+      ]);
+      setPopular([
+        "Popular 1",
+        "Popular 2",
+        "Popular 3",
+        "Popular 4",
+        "Popular 5",
+      ]);
+    }, 800);
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -33,7 +56,6 @@ export default function Index() {
       <SafeAreaView style={styles.container}>
         <ScrollView
           contentContainerStyle={styles.scrollView}
-          style={{ flex: 1 }}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -46,16 +68,29 @@ export default function Index() {
             </Text>
           </View>
 
-          <Link href="/browse">{t("browseProducts")}</Link>
+          <Link
+            href="/browse"
+            style={{
+              fontSize: 20,
+            }}
+          >
+            {t("browseProducts")}
+          </Link>
 
           <View>
             <Text style={{ fontSize: 16, marginTop: 20, marginBottom: 10 }}>
               {t("shopByCategory")}
             </Text>
-            <ScrollView style={{ flexDirection: "row", gap: 10 }} horizontal>
-              {Array.from({ length: 10 }).map((item, i) => (
+            <FlatList
+              data={categories}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                gap: 10,
+              }}
+              keyExtractor={(item) => item}
+              renderItem={(item) => (
                 <Pressable
-                  key={i}
                   style={{
                     width: 100,
                     height: 100,
@@ -64,26 +99,25 @@ export default function Index() {
                     alignItems: "center",
                   }}
                 >
-                  <Link
-                    href={{
-                      pathname: "/products/[id]",
-                      params: { id: i.toString() },
-                    }}
-                  >
-                    {i}
-                  </Link>
+                  <Text>{item.item}</Text>
                 </Pressable>
-              ))}
-            </ScrollView>
+              )}
+            />
           </View>
           <View>
             <Text style={{ fontSize: 16, marginTop: 20, marginBottom: 10 }}>
               {t("popular")}
             </Text>
-            <ScrollView style={{ flexDirection: "row", gap: 10 }} horizontal>
-              {Array.from({ length: 10 }).map((item, i) => (
+            <FlatList
+              data={popular}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                gap: 10,
+              }}
+              keyExtractor={(item) => item}
+              renderItem={(item) => (
                 <Pressable
-                  key={i}
                   style={{
                     width: 100,
                     height: 100,
@@ -92,10 +126,10 @@ export default function Index() {
                     alignItems: "center",
                   }}
                 >
-                  <Text>{i}</Text>
+                  <Text>{item.item}</Text>
                 </Pressable>
-              ))}
-            </ScrollView>
+              )}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>
