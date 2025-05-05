@@ -1,12 +1,15 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-// import js from "@eslint/js";
+import { globalIgnores } from "eslint/config";
 import pluginReactNative from "eslint-plugin-react-native";
 import reactPlugin from "eslint-plugin-react";
 import hooksPlugin from "eslint-plugin-react-hooks";
 import prettierConfig from "eslint-config-prettier";
 import tsPlugin from "typescript-eslint";
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
 
-export default defineConfig([
+export default tseslint.config(
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
   reactPlugin.configs.flat?.recommended,
   reactPlugin.configs.flat?.["jsx-runtime"],
   tsPlugin.configs.recommended,
@@ -29,5 +32,5 @@ export default defineConfig([
       },
     },
   },
-  globalIgnores([".expo", "node_modules"]),
-]);
+  globalIgnores([".expo", "node_modules"])
+);

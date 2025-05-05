@@ -8,7 +8,7 @@ export default function Cart() {
 
   return (
     <View style={styles.container}>
-      {!!items.length ? (
+      {items.length ? (
         <FlatList
           data={items}
           renderItem={({ item }) => <CartItem item={item} />}
