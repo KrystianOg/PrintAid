@@ -24,7 +24,13 @@ expo-env.d.ts
 npm-debug.*
 yarn-debug.*
 yarn-error.*
-.yarn
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # macOS
 .DS_Store
@@ -43,5 +49,5 @@ app-example
 .idea
 
 # vscode
-.vscode/
+.vscode/*
 !.vscode/extensions.json
