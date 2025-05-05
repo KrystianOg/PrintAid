@@ -14,6 +14,8 @@
 
 ### [Roadmap]()
 
+- [ ] Persist state and settings
+
 ---
 
 ## Technologies

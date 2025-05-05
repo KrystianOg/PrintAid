@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { colors, spacing, typography } from "@/theme/color";
+import { colors, spacing, typography } from "@/constants/colors";
 
 type Theme = {
   colors: typeof colors;
