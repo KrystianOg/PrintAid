@@ -1,6 +1,7 @@
 import { Link } from "expo-router";
 import { View } from "react-native";
 import type { Href } from "expo-router";
+import { StyleSheet } from "react-native";
 
 //eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface BottomTabsProps {}
@@ -20,16 +21,7 @@ export const ButtonTabs = ({}: BottomTabsProps) => {
   ];
 
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        bottom: 0,
-      }}
-    >
+    <View style={styles.container}>
       {tabs.map((tab) => (
         <View key={tab.name}>
           <Link href={tab.href}>{tab.name}</Link>
@@ -38,3 +30,14 @@ export const ButtonTabs = ({}: BottomTabsProps) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    bottom: 0,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    position: "absolute",
+  },
+});

@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { Link } from "expo-router";
+import { colors, globalStyles, typography } from "@/constants/theme";
 
 export default function Index() {
   const { t } = useTranslation("home");
@@ -53,79 +54,47 @@ export default function Index() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={globalStyles.flex}>
         <ScrollView
-          contentContainerStyle={styles.scrollView}
+          contentContainerStyle={globalStyles.flex}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          <View
-            style={{ width: "100%", height: 200, backgroundColor: "lightblue" }}
-          >
-            <Text style={{ fontSize: 24, textAlign: "center", marginTop: 50 }}>
-              {t("banner")}
-            </Text>
+          <View style={styles.banner}>
+            <Text style={styles.bannerText}>{t("banner")}</Text>
           </View>
 
-          <Link
-            href="/browse"
-            style={{
-              fontSize: 20,
-            }}
-          >
+          <Link href="/browse" style={typography.h6}>
             {t("browseProducts")}
           </Link>
 
+          {/* FIXME: this is repeated */}
           <View>
-            <Text style={{ fontSize: 16, marginTop: 20, marginBottom: 10 }}>
-              {t("shopByCategory")}
-            </Text>
+            <Text style={styles.sectionText}>{t("shopByCategory")}</Text>
             <FlatList
               data={categories}
               horizontal
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                gap: 10,
-              }}
+              contentContainerStyle={styles.listContainer}
               keyExtractor={(item) => item}
               renderItem={(item) => (
-                <Pressable
-                  style={{
-                    width: 100,
-                    height: 100,
-                    backgroundColor: "lightgray",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+                <Pressable style={styles.listItem}>
                   <Text>{item.item}</Text>
                 </Pressable>
               )}
             />
           </View>
           <View>
-            <Text style={{ fontSize: 16, marginTop: 20, marginBottom: 10 }}>
-              {t("popular")}
-            </Text>
+            <Text style={styles.sectionText}>{t("popular")}</Text>
             <FlatList
               data={popular}
               horizontal
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                gap: 10,
-              }}
+              contentContainerStyle={styles.listContainer}
               keyExtractor={(item) => item}
               renderItem={(item) => (
-                <Pressable
-                  style={{
-                    width: 100,
-                    height: 100,
-                    backgroundColor: "lightgray",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+                <Pressable style={styles.listItem}>
                   <Text>{item.item}</Text>
                 </Pressable>
               )}
@@ -138,10 +107,29 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  banner: {
+    backgroundColor: colors.backgroundBlue,
+    height: 200,
+    width: "100%",
   },
-  scrollView: {
-    flex: 1,
+  bannerText: {
+    ...typography.h5,
+    marginTop: 50,
+    textAlign: "center",
+  },
+  listContainer: {
+    gap: 10,
+  },
+  listItem: {
+    alignItems: "center",
+    backgroundColor: colors.gray,
+    height: 100,
+    justifyContent: "center",
+    width: 100,
+  },
+  sectionText: {
+    ...typography.h5,
+    marginBottom: 10,
+    marginTop: 20,
   },
 });

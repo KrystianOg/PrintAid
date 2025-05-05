@@ -1,6 +1,7 @@
 import { useCart } from "@/stores/cart";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import { CartItem } from "@/components/CartItem";
+import { globalStyles } from "@/constants/theme";
 
 export default function Cart() {
   const { items } = useCart();
@@ -20,9 +21,7 @@ export default function Cart() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: globalStyles.flex,
   noItems: {
     fontSize: 18,
   },

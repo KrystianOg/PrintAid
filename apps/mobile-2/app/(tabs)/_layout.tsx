@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { colors } from "@/constants/theme";
-import { Image } from "react-native";
+import { Image, StyleSheet } from "react-native";
 
 import icon from "@/assets/images/react-logo.png";
 
@@ -26,7 +26,7 @@ export default function Layout() {
             tabBarIcon: ({ color }) => (
               <Image
                 source={icon}
-                style={{ width: 24, height: 24, tintColor: color }}
+                style={[styles.icon, { tintColor: color }]}
               />
             ),
           }}
@@ -35,3 +35,11 @@ export default function Layout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  // FIXME: extract to icon type
+  icon: {
+    height: 24,
+    width: 24,
+  },
+});

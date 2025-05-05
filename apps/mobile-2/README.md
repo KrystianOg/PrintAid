@@ -1,4 +1,6 @@
-<!-- put some tags here / baner -->
+<!-- put some tags here / banner -->
+
+# Temporary heading
 
 ---
 
@@ -12,7 +14,7 @@
 
 <!-- TODO: content here -->
 
-### [Roadmap]()
+### Roadmap
 
 - [ ] Persist state and settings
 

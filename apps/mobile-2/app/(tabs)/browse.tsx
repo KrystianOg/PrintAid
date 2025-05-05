@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { StyleSheet } from "react-native";
 import { Link } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,8 +14,7 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import type { ProductListItem } from "@/types/products";
 import { fetch } from "@/lib/fetch";
-
-const GAP = 8;
+import { colors, globalStyles, spacing, typography } from "@/constants/theme";
 
 export default function Browse() {
   const { t } = useTranslation("browse");
@@ -43,32 +43,21 @@ export default function Browse() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ height: 50 }}>
-          <Text style={{ fontSize: 24 }}>{t("search")}</Text>
+      <SafeAreaView style={globalStyles.flex}>
+        <View>
+          <Text style={typography.h5}>{t("search")}</Text>
         </View>
         <ScrollView
           horizontal
-          contentContainerStyle={{
-            gap: 10,
-          }}
+          contentContainerStyle={styles.categoriesContainer}
         >
           {categories.map((category, i) => (
-            <Pressable
-              key={i}
-              style={{
-                width: 100,
-                height: 20,
-                backgroundColor: "lightgray",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <Pressable key={i} style={styles.categoryItem}>
               <Text>{category}</Text>
             </Pressable>
           ))}
         </ScrollView>
-        <View style={{ flex: 1, flexDirection: "row" }}>
+        <View style={styles.ctaGroup}>
           <Button title={t("filter")} kind="cta" />
           <Button title={t("sort")} kind="cta" />
         </View>
@@ -80,18 +69,13 @@ export default function Browse() {
           numColumns={2}
           data={products}
           renderItem={({ item: product }) => (
+            // TODO: extract this to a component
             <Link
               href={{
                 pathname: "/products/[id]",
                 params: { id: product.id },
               }}
-              style={{
-                width: "49%",
-                height: 250,
-                backgroundColor: "lightgray",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              style={styles.gridItem}
             >
               <Text>{product.name}</Text>
               <Text>{product.price}</Text>
@@ -100,12 +84,39 @@ export default function Browse() {
             </Link>
           )}
           keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={{
-            gap: GAP,
-          }}
-          columnWrapperStyle={{ gap: GAP }}
+          contentContainerStyle={styles.gridGap}
+          columnWrapperStyle={styles.gridGap}
         />
       </SafeAreaView>
     </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  categoriesContainer: {
+    gap: 10,
+  },
+  categoryItem: {
+    alignItems: "center",
+    backgroundColor: colors.backgroundBlue,
+    height: 20,
+    justifyContent: "center",
+    width: 100,
+  },
+  ctaGroup: {
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 10,
+  },
+  gridGap: {
+    gap: spacing(1),
+  },
+  gridItem: {
+    // FIXME: extract this and this part to component
+    alignItems: "center",
+    backgroundColor: colors.backgroundBlue,
+    height: 250,
+    justifyContent: "center",
+    width: "49%",
+  },
+});

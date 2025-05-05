@@ -1,4 +1,4 @@
-import { StyleProp, TextStyle } from "react-native";
+import { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 export const colors = {
   primary: "#005A9C",
@@ -9,7 +9,9 @@ export const colors = {
   text: "#000000",
   disabled: "rgba(0, 0, 0, 0.38)",
   placeholder: "rgba(0, 0, 0, 0.54)",
+  // REVIEW: change these colors
   gray: "#ccc", // TODO: change this
+  backgroundBlue: "#E0F7FA", // TODO: change this
 };
 
 export const spacing = (factor: number): number => factor * 8;
@@ -29,3 +31,11 @@ export const typography = {
   caption: { fontSize: 12, fontWeight: "400" as const, letterSpacing: 0.4 },
   overline: { fontSize: 10, fontWeight: "400" as const, letterSpacing: 1.5 },
 } satisfies Record<string, StyleProp<TextStyle>>;
+
+export const globalStyles = {
+  flex: { flex: 1 },
+  flexRow: { flex: 1, flexDirection: "row" },
+  center: { flex: 1, justifyContent: "center", alignItems: "center" },
+  row: { flexDirection: "row" },
+  column: { flexDirection: "column" },
+} satisfies Record<string, StyleProp<ViewStyle>>;
