@@ -2,6 +2,13 @@ export const en = {
   common: {
     hello: "Hello",
     world: "World",
+    loading: "Loading...",
+  },
+  tabs: {
+    index: "Home",
+    browse: "Browse",
+    cart: "Cart",
+    settings: "Settings",
   },
   home: {
     banner: "Welcome to the app!",

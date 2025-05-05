@@ -4,6 +4,13 @@ export const pl = {
   common: {
     hello: "Cześć",
     world: "Świat",
+    loading: "Ładowanie...",
+  },
+  tabs: {
+    index: "Strona główna",
+    browse: "Przeglądaj",
+    cart: "Koszyk",
+    settings: "Ustawienia",
   },
   home: {
     banner: "Witamy w aplikacji!",
@@ -21,5 +28,9 @@ export const pl = {
     description: "Opis produktu",
     price: "Cena",
     addToCart: "Dodaj do koszyka",
+    category: "Kategoria",
+    similar: "Podobne produkty",
+    related: "Powiązane produkty",
+    realizationTime: "Czas realizacji",
   },
 } satisfies Resources;

@@ -1,5 +1,7 @@
+import { StyleProp, TextStyle } from "react-native";
+
 export const colors = {
-  primary: "#6200EE",
+  primary: "#005A9C",
   secondary: "#03DAC6",
   background: "#F6F6F6",
   surface: "#FFFFFF",
@@ -25,4 +27,4 @@ export const typography = {
   button: { fontSize: 14, fontWeight: "500" as const, letterSpacing: 1.25 },
   caption: { fontSize: 12, fontWeight: "400" as const, letterSpacing: 0.4 },
   overline: { fontSize: 10, fontWeight: "400" as const, letterSpacing: 1.5 },
-};
+} satisfies Record<string, StyleProp<TextStyle>>;
