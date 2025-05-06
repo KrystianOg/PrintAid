@@ -1,7 +1,7 @@
 import { Button } from "@/components/Button";
 import { StyleSheet } from "react-native";
 import { Link } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   RefreshControl,
@@ -13,14 +13,14 @@ import {
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import type { ProductListItem } from "@/types/products";
-import { fetch } from "@/lib/fetch";
-import { colors, globalStyles, spacing, typography } from "@/constants/theme";
+import { spacing, typography } from "@/constants/theme";
+import { useFetch } from "@/hooks/useFetch";
 
 export default function Browse() {
   const { t } = useTranslation("browse");
   const [refreshing, setRefreshing] = useState(false);
 
-  const [products, setProducts] = useState<ProductListItem[]>([]);
+  const { data: products } = useFetch<ProductListItem[]>("/products");
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -29,23 +29,11 @@ export default function Browse() {
     }, 2000);
   }, []);
 
-  const loadProducts = useCallback(async (): Promise<ProductListItem[]> => {
-    return fetch<ProductListItem[]>("/products");
-  }, []);
-
-  useEffect(() => {
-    loadProducts()
-      .then((products) => {
-        setProducts(products);
-      })
-      .catch(console.error);
-  }, [loadProducts]);
-
   const categories = ["Category 1", "Category 2", "Category 3"];
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={globalStyles.flex}>
+      <SafeAreaView>
         <View>
           <Text style={typography.h5}>{t("search")}</Text>
         </View>
@@ -80,7 +68,6 @@ export default function Browse() {
               style={styles.gridItem}
             >
               <Text>{product.name}</Text>
-              <Text>{product.price}</Text>
               <Text>{product.description}</Text>
               <Text>{product.name}</Text>
             </Link>
@@ -100,7 +87,6 @@ const styles = StyleSheet.create({
   },
   categoryItem: {
     alignItems: "center",
-    backgroundColor: colors.backgroundBlue,
     height: 20,
     justifyContent: "center",
     width: 100,
@@ -116,7 +102,6 @@ const styles = StyleSheet.create({
   gridItem: {
     // FIXME: extract this and this part to component
     alignItems: "center",
-    backgroundColor: colors.backgroundBlue,
     height: 250,
     justifyContent: "center",
     width: "49%",

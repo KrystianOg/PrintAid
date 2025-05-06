@@ -3,7 +3,9 @@ type FetchParams = Parameters<Fetch>;
 
 const _fetch = async <T>(input: FetchParams[0], init?: FetchParams[1]) => {
   const _input =
-    typeof input === "string" ? new URL(input, process.env.API_URL) : input;
+    typeof input === "string"
+      ? new URL(input, process.env.EXPO_PUBLIC_API_URL)
+      : input;
 
   const result = await globalThis.fetch(_input, init);
 

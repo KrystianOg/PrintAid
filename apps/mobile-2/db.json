@@ -3,355 +3,376 @@
     {
       "id": "1",
       "name": "Product 1",
-      "price": 29.99,
+      "prices": [
+        {
+          "amount": 5.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 20.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 1",
       "category": "Category 1",
       "image": "image1.png",
       "stock": 100,
       "discount": 10,
       "availability": "In Stock",
-      "similar": [
-        "Product 2",
-        "Product 3"
-      ],
-      "related": [
-        "Product 4",
-        "Product 5"
-      ],
+      "similar": ["Product 2", "Product 3"],
+      "related": ["Product 4", "Product 5"],
       "realizationTime": "2-3 days",
-      "tags": [
-        "tag1",
-        "tag2"
-      ]
+      "tags": ["tag1", "tag2"]
     },
     {
       "id": "2",
       "name": "Product 2",
-      "price": 39.99,
+      "prices": [
+        {
+          "amount": 8.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 35.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 2",
       "category": "Category 1",
       "image": "image2.png",
       "stock": 50,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 3"
-      ],
-      "related": [
-        "Product 4",
-        "Product 5"
-      ],
+      "similar": ["Product 1", "Product 3"],
+      "related": ["Product 4", "Product 5"],
       "realizationTime": "1-2 days",
-      "tags": [
-        "tag1",
-        "tag3"
-      ]
+      "tags": ["tag1", "tag3"]
     },
     {
       "id": "3",
       "name": "Product 3",
-      "price": 19.99,
+      "prices": [
+        {
+          "amount": 4.5,
+          "currency": "EUR"
+        },
+        {
+          "amount": 18.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 3",
       "category": "Category 2",
       "image": "image3.png",
       "stock": 200,
       "discount": 0,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 4",
-        "Product 5"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 4", "Product 5"],
       "realizationTime": "3-5 days",
-      "tags": [
-        "tag2",
-        "tag4"
-      ]
+      "tags": ["tag2", "tag4"]
     },
     {
       "id": "4",
       "name": "Product 4",
-      "price": 49.99,
+      "prices": [
+        {
+          "amount": 10.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 45.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 4",
       "category": "Category 3",
       "image": "image4.png",
       "stock": 75,
       "discount": 15,
       "availability": "Out of Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 5"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 5"],
       "realizationTime": "5-7 days",
-      "tags": [
-        "tag1",
-        "tag5"
-      ]
+      "tags": ["tag1", "tag5"]
     },
     {
       "id": "5",
       "name": "Product 5",
-      "price": 59.99,
+      "prices": [
+        {
+          "amount": 12.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 55.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 5",
       "category": "Category 3",
       "image": "image5.png",
       "stock": 30,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "2-4 days",
-      "tags": [
-        "tag3",
-        "tag6"
-      ]
+      "tags": ["tag3", "tag6"]
     },
     {
       "id": "6",
       "name": "Product 6",
-      "price": 15.99,
+      "prices": [
+        {
+          "amount": 6.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 25.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 6",
       "category": "Category 2",
       "image": "image6.png",
       "stock": 150,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "1-2 days",
-      "tags": [
-        "tag1",
-        "tag7"
-      ]
+      "tags": ["tag1", "tag7"]
     },
     {
       "id": "7",
       "name": "Product 7",
-      "price": 25.99,
+      "prices": [
+        {
+          "amount": 7.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 30.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 7",
       "category": "Category 1",
       "image": "image7.png",
       "stock": 80,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "2-3 days",
-      "tags": [
-        "tag2",
-        "tag8"
-      ]
+      "tags": ["tag2", "tag8"]
     },
     {
       "id": "8",
       "name": "Product 8",
-      "price": 35.99,
+      "prices": [
+        {
+          "amount": 9.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 40.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 8",
       "category": "Category 2",
       "image": "image8.png",
       "stock": 60,
       "discount": 0,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "3-5 days",
-      "tags": [
-        "tag3",
-        "tag9"
-      ]
+      "tags": ["tag3", "tag9"]
     },
     {
       "id": "9",
       "name": "Product 9",
-      "price": 45.99,
+      "prices": [
+        {
+          "amount": 10.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 45.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 9",
       "category": "Category 3",
       "image": "image9.png",
       "stock": 40,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "2-4 days",
-      "tags": [
-        "tag4",
-        "tag10"
-      ]
+      "tags": ["tag4", "tag10"]
     },
     {
       "id": "10",
       "name": "Product 10",
-      "price": 55.99,
+      "prices": [
+        {
+          "amount": 11.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 50.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 10",
       "category": "Category 3",
       "image": "image10.png",
       "stock": 20,
       "discount": 20,
       "availability": "Out of Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "5-7 days",
-      "tags": [
-        "tag5",
-        "tag11"
-      ]
+      "tags": ["tag5", "tag11"]
     },
     {
       "id": "11",
       "name": "Product 11",
-      "price": 65.99,
+      "prices": [
+        {
+          "amount": 12.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 55.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 11",
       "category": "Category 1",
       "image": "image11.png",
       "stock": 10,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "1-2 days",
-      "tags": [
-        "tag6",
-        "tag12"
-      ]
+      "tags": ["tag6", "tag12"]
     },
     {
       "id": "12",
       "name": "Product 12",
-      "price": 75.99,
+      "prices": [
+        {
+          "amount": 13.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 60.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 12",
       "category": "Category 2",
       "image": "image12.png",
       "stock": 15,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "2-3 days",
-      "tags": [
-        "tag7",
-        "tag13"
-      ]
+      "tags": ["tag7", "tag13"]
     },
     {
       "id": "13",
       "name": "Product 13",
-      "price": 85.99,
+      "prices": [
+        {
+          "amount": 14.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 65.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 13",
       "category": "Category 3",
       "image": "image13.png",
       "stock": 5,
       "availability": "Out of Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "5-7 days",
-      "tags": [
-        "tag8",
-        "tag14"
-      ]
+      "tags": ["tag8", "tag14"]
     },
     {
       "id": "14",
       "name": "Product 14",
-      "price": 95.99,
+      "prices": [
+        {
+          "amount": 15.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 70.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 14",
       "category": "Category 1",
       "image": "image14.png",
       "stock": 8,
       "availability": "In Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "2-4 days",
-      "tags": [
-        "tag9",
-        "tag15"
-      ]
+      "tags": ["tag9", "tag15"]
     },
     {
       "id": "15",
       "name": "Product 15",
-      "price": 105.99,
+      "prices": [
+        {
+          "amount": 16.0,
+          "currency": "EUR"
+        },
+        {
+          "amount": 75.0,
+          "currency": "PLN"
+        }
+      ],
       "description": "Description for Product 15",
       "category": "Category 2",
       "image": "image15.png",
       "stock": 3,
       "availability": "Out of Stock",
-      "similar": [
-        "Product 1",
-        "Product 2"
-      ],
-      "related": [
-        "Product 3",
-        "Product 4"
-      ],
+      "similar": ["Product 1", "Product 2"],
+      "related": ["Product 3", "Product 4"],
       "realizationTime": "5-7 days",
-      "tags": [
-        "tag10",
-        "tag16"
-      ]
+      "tags": ["tag10", "tag16"]
     },
     {
       "id": "639a"
     }
-  ]
+  ],
+  "categories": [
+    {
+      "id": "Category 1",
+      "name": "Category 1",
+      "description": "Description for Category 1",
+      "image": "category1.png"
+    },
+    {
+      "id": "Category 2",
+      "name": "Category 2",
+      "description": "Description for Category 2",
+      "image": "category2.png"
+    },
+    {
+      "id": "Category 3",
+      "name": "Category 3",
+      "description": "Description for Category 3",
+      "image": "category3.png"
+    }
+  ],
+  "popular": ["1", "2", "3"]
 }

@@ -1,7 +1,7 @@
 export interface Product {
   id: string;
   name: string;
-  price: number;
+  prices: { amount: number; currency: string }[];
   description: string;
   category: string;
   image: string;
@@ -17,5 +17,9 @@ export interface Product {
 
 export type ProductListItem = Pick<
   Product,
-  "id" | "name" | "price" | "description" | "image"
+  "id" | "name" | "prices" | "description" | "image"
 >;
+
+export type ProductCartItem = ProductListItem & {
+  quantity: number;
+};

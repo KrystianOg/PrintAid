@@ -1,17 +1,34 @@
-import { StyleProp, TextStyle, ViewStyle } from "react-native";
+import { StyleProp, TextStyle, useColorScheme, ViewStyle } from "react-native";
+
+export function useLightDark<Key extends keyof typeof colors>(
+  key: Key
+): (typeof colors)[Key] {
+  const colorScheme = useColorScheme();
+
+  return colorScheme === "dark" ? darkColors[key] : colors[key];
+}
 
 export const colors = {
   primary: "#005A9C",
   secondary: "#03DAC6",
   background: "#F6F6F6",
   surface: "#FFFFFF",
+  white: "#ffffff",
   error: "#B00020",
   text: "#000000",
   disabled: "rgba(0, 0, 0, 0.38)",
   placeholder: "rgba(0, 0, 0, 0.54)",
   // REVIEW: change these colors
   gray: "#ccc", // TODO: change this
-  backgroundBlue: "#E0F7FA", // TODO: change this
+};
+
+export const darkColors: typeof colors = {
+  ...colors,
+  background: "#121212",
+  surface: "#121212",
+  text: "#ffffff",
+  disabled: "rgba(255, 255, 255, 0.38)",
+  placeholder: "rgba(255, 255, 255, 0.54)",
 };
 
 export const spacing = (factor: number): number => factor * 8;

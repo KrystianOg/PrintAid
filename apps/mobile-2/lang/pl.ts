@@ -33,4 +33,15 @@ export const pl = {
     related: "Powiązane produkty",
     realizationTime: "Czas realizacji",
   },
+  cart: {
+    noItems: "Brak przedmiotów w koszyku",
+    total: "Razem",
+    checkout: "Zamówienie",
+    subtotal: "Suma częściowa",
+  },
+  settings: {
+    title: "Ustawienia",
+    changeLanguage: "Zmień język",
+    toggleTheme: "Przełącz motyw",
+  },
 } satisfies Resources;

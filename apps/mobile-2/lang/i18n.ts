@@ -8,6 +8,11 @@ export const resources = {
   pl,
 };
 
+export const supportedLocales = Object.keys(
+  resources
+) as (keyof typeof resources)[];
+export type SupportedLocale = (typeof supportedLocales)[number];
+
 export const defaultNS = "common";
 
 void i18n.use(initReactI18next).init({

@@ -4,14 +4,15 @@ import {
 } from "react-native";
 
 interface ButtonProps extends ButtonBaseProps {
-  kind: "cta";
+  kind?: "cta";
 }
 
-export function Button(props: ButtonProps) {
+export function Button({ title, accessibilityLabel, ...props }: ButtonProps) {
   return (
     <ButtonBase
-      title={props.title}
-      accessibilityLabel={props.accessibilityLabel ?? props.title}
+      {...props}
+      title={title}
+      accessibilityLabel={accessibilityLabel ?? title}
     />
   );
 }

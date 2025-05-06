@@ -50,5 +50,5 @@ export default tseslint.config(
       },
     },
   },
-  globalIgnores([".expo", "node_modules", "*.config.mjs"])
+  globalIgnores([".expo", "node_modules", "*.config.mjs", "*.config.js"])
 );

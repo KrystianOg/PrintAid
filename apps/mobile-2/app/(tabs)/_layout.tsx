@@ -1,45 +1,63 @@
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { colors } from "@/constants/theme";
-import { Image, StyleSheet } from "react-native";
 
-import icon from "@/assets/images/react-logo.png";
+import HomeIcon from "@/assets/icons/lucide--home.svg";
+import CartIcon from "@/assets/icons/lucide--shopping-cart.svg";
+import SettingsIcon from "@/assets/icons/lucide--settings.svg";
+import BrowseIcon from "@/assets/icons/lucide--search.svg";
+import { useLightDark } from "@/constants/theme";
 
 // TODO: test if all images are properly loading
 export default function Layout() {
   const { t } = useTranslation("tabs");
-  const tabs = (["index", "browse", "cart", "settings"] as const).map(
-    (tab) => ({
-      name: tab,
-      title: t(tab),
-    })
-  );
+
+  const tabs = [
+    {
+      name: "index",
+      title: t("index"),
+      Icon: HomeIcon,
+    },
+    {
+      name: "browse",
+      title: t("browse"),
+      Icon: BrowseIcon,
+    },
+    {
+      name: "cart",
+      title: t("cart"),
+      Icon: CartIcon,
+    },
+    {
+      name: "settings",
+      title: t("settings"),
+      Icon: SettingsIcon,
+    },
+  ];
 
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: colors.primary }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: useLightDark("primary"),
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: useLightDark("background"),
+          borderTopWidth: 0,
+        },
+        tabBarLabelStyle: {
+          color: useLightDark("text"),
+        },
+      }}
+    >
       {tabs.map((tab) => (
         <Tabs.Screen
           key={tab.name}
           name={tab.name}
           options={{
             title: tab.title,
-            tabBarIcon: ({ color }) => (
-              <Image
-                source={icon}
-                style={[styles.icon, { tintColor: color }]}
-              />
-            ),
+            tabBarIcon: ({ color }) => <tab.Icon height={24} color={color} />,
           }}
         />
       ))}
     </Tabs>
   );
 }
-
-const styles = StyleSheet.create({
-  // FIXME: extract to icon type
-  icon: {
-    height: 24,
-    width: 24,
-  },
-});

@@ -54,7 +54,7 @@ export default function Index() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={globalStyles.flex}>
+      <SafeAreaView>
         <ScrollView
           contentContainerStyle={globalStyles.flex}
           refreshControl={
@@ -108,7 +108,6 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   banner: {
-    backgroundColor: colors.backgroundBlue,
     height: 200,
     width: "100%",
   },

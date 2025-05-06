@@ -1,38 +1,16 @@
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, StyleSheet } from "react-native";
 import type { Product } from "@/types/products";
 import { colors, globalStyles, typography } from "@/constants/theme";
+import { formatCurrency, supportedLocalesCurrencyMap } from "@/utils/currency";
+import { useFetch } from "@/hooks/useFetch";
 
 export default function ProductDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { t } = useTranslation("product");
+  const { t, i18n } = useTranslation("product");
 
-  const [product, setProduct] = useState<Product>();
-
-  useEffect(() => {
-    setTimeout(() => {
-      const product: Product = {
-        id,
-        name: "Product Name",
-        price: 100,
-        description: "Product Description",
-        category: "Category",
-        image: "https://via.placeholder.com/150",
-        stock: 10,
-        discount: 0,
-        availability: "In Stock",
-        similar: ["Similar Product 1", "Similar Product 2"],
-        related: ["Related Product 1", "Related Product 2"],
-        realizationTime: "2 days",
-        tags: ["tag1", "tag2"],
-        meta: {},
-      };
-
-      setProduct(product);
-    }, 700);
-  }, [id]);
+  const { data: product } = useFetch<Product>(`/products/${id}`);
 
   if (!product) {
     return (
@@ -41,6 +19,14 @@ export default function ProductDetail() {
       </View>
     );
   }
+
+  const amount = product.prices.find(
+    (p) => p.currency === supportedLocalesCurrencyMap[i18n.language]
+  )?.amount;
+
+  const formattedPrice = amount
+    ? formatCurrency(i18n.language).format(amount)
+    : undefined;
 
   return (
     <View style={styles.container}>
@@ -53,9 +39,11 @@ export default function ProductDetail() {
       <Text style={styles.typo}>
         {t("name")} {product.name}
       </Text>
-      <Text style={styles.typo}>
-        {t("price")}: {product.price}
-      </Text>
+      {!!formattedPrice && (
+        <Text style={styles.typo}>
+          {t("price")}: {formattedPrice}
+        </Text>
+      )}
       <Text style={styles.typo}>
         {t("description")} {product.description}
       </Text>
@@ -83,7 +71,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   image: {
-    backgroundColor: colors.backgroundBlue,
     height: 200,
     width: "100%",
   },

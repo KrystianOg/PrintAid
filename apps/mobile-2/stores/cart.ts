@@ -7,8 +7,10 @@ export interface CartItem {
   quantity: number;
 }
 
+export const CART_STORAGE_KEY = "cart";
+
 export const useCart = () => {
-  const [items, setItems] = useAsyncStorage<CartItem[]>("cart", []);
+  const [items, setItems] = useAsyncStorage<CartItem[]>(CART_STORAGE_KEY, []);
 
   const addItem = (item: CartItem): void => {
     void setItems((prevItems) => {

@@ -5,6 +5,7 @@ export const en = {
     loading: "Loading...",
   },
   tabs: {
+    // REVIEW: link these instead of direct translation
     index: "Home",
     browse: "Browse",
     cart: "Cart",
@@ -30,6 +31,17 @@ export const en = {
     similar: "Similar Products",
     related: "Related Products",
     realizationTime: "Realization Time",
+  },
+  cart: {
+    noItems: "No items in the cart",
+    total: "Total",
+    checkout: "Checkout",
+    subtotal: "Subtotal",
+  },
+  settings: {
+    title: "Settings",
+    changeLanguage: "Change Language",
+    toggleTheme: "Toggle Theme",
   },
 };
 
