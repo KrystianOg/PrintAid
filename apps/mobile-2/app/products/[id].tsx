@@ -10,7 +10,13 @@ export default function ProductDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t, i18n } = useTranslation("product");
 
-  const { data: product } = useFetch<Product>(`/products/${id}`);
+  const { data: product 
+
+  } = useFetch<Product>(`/products/${id}`);
+
+
+
+  export default [id]
 
   if (!product) {
     return (
