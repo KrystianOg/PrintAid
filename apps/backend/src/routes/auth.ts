@@ -1,10 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { registerUser, loginUser } from "../controllers/authController.js";
-import {
-  loginSchema,
-  registerSchema,
-  validate,
-} from "../middlewares/validation.js";
+import { validate } from "../middlewares/validation.js";
+import { registerUser, loginUser } from "../features/auth/auth.controller.js";
+import { registerSchema, loginSchema } from "../features/auth/auth.schemas.js";
 
 const router = Router();
 
@@ -29,7 +26,7 @@ router.post(
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 export default router;

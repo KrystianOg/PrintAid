@@ -1,7 +1,7 @@
 import request from "supertest";
 import { describe, it, expect, beforeAll } from "vitest";
-import { app } from "../index.js";
-import { pool } from "../lib/db.js";
+import { app } from "../../index.js";
+import { pool } from "../../lib/db.js";
 
 describe("Authentication Routes", () => {
   beforeAll(async () => {

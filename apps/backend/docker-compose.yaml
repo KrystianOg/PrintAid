@@ -30,7 +30,6 @@ services:
       - ./public/uploads:/usr/src/app/public/uploads
     ports:
       - "3000:3000"
-    command: sh -c "chmod +x ./migrate.sh && ./migrate.sh up && npm start"
     develop:
       watch:
         - action: sync

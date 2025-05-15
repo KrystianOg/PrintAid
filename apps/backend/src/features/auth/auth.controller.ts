@@ -1,10 +1,8 @@
-import { hash, compare } from "bcrypt";
 import jwt from "jsonwebtoken";
-import { pool } from "../lib/db.js";
-import crypto from "node:crypto";
-import { BadRequestError, UnauthorizedError } from "../utils/errors.js";
+import { pool } from "../../lib/db.js";
+import { BadRequestError, UnauthorizedError } from "../../utils/errors.js";
+import * as argon2 from "argon2";
 
-const SALT_ROUNDS = 10;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 interface RegisterDTO {
@@ -32,21 +30,26 @@ export async function registerUser(dto: RegisterDTO): Promise<RegisterResult> {
 
   const { rowCount } = await pool.query(
     "SELECT 1 FROM users WHERE email = $1",
-    [email],
+    [email]
   );
 
   if (rowCount !== null && rowCount > 0) {
     throw new BadRequestError("Email already in use");
   }
 
-  const passwordHash = await hash(password, SALT_ROUNDS);
-  const userId = crypto.randomUUID();
+  const passwordHash = await argon2.hash(password);
 
-  await pool.query(
-    `INSERT INTO users (id, email, password_hash, is_admin, created_at) 
-      VALUES ($1, $2, $3, FALSE, NOW())`,
-    [userId, email, passwordHash],
+  const smth = await pool.query<{ id: string }>(
+    `INSERT INTO users (email, password_hash) 
+      VALUES ($1, $2) RETURNING id;`,
+    [email, passwordHash]
   );
+
+  const userId = smth.rows[0]?.id;
+
+  if (userId === undefined) {
+    throw new BadRequestError("No id returned");
+  }
 
   return { userId };
 }
@@ -59,7 +62,7 @@ export async function loginUser(dto: LoginDTO): Promise<LoginResult> {
 
   const { rows } = await pool.query(
     `SELECT id, password_hash, is_admin FROM users WHERE email = $1`,
-    [email],
+    [email]
   );
 
   if (rows.length === 0) {
@@ -68,7 +71,7 @@ export async function loginUser(dto: LoginDTO): Promise<LoginResult> {
 
   const { id, password_hash, is_admin } = rows[0];
 
-  const match = await compare(password, password_hash);
+  const match = await argon2.verify(password_hash, password);
   if (!match) {
     throw new UnauthorizedError("Invalid email or password");
   }
@@ -79,7 +82,7 @@ export async function loginUser(dto: LoginDTO): Promise<LoginResult> {
       isAdmin: is_admin,
     },
     JWT_SECRET,
-    { expiresIn: "6h" },
+    { expiresIn: "6h" }
   );
 
   return { token };

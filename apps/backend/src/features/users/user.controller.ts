@@ -1,6 +1,6 @@
-import { pool } from "../lib/db.js";
+import { pool } from "../../lib/db.js";
 
-import { NotFoundError, BadRequestError } from "../utils/errors.js";
+import { NotFoundError, BadRequestError } from "../../utils/errors.js";
 
 interface UserProfile {
   id: string;
@@ -8,7 +8,7 @@ interface UserProfile {
   isAdmin: boolean;
   createdAt: string;
 }
-interface UserListItem extends UserProfile { }
+interface UserListItem extends UserProfile {}
 interface UserUpdateDTO {
   email?: string;
   isAdmin?: boolean;
@@ -20,7 +20,7 @@ interface UserUpdateDTO {
 export async function getCurrentUser(userId: string): Promise<UserProfile> {
   const { rows } = await pool.query(
     `SELECT id, email, is_admin AS "isAdmin", created_at AS "createdAt" FROM users WHERE id = $1`,
-    [userId],
+    [userId]
   );
 
   if (rows.length === 0) {
@@ -36,7 +36,7 @@ export async function getCurrentUser(userId: string): Promise<UserProfile> {
 export async function listUsers(): Promise<UserListItem[]> {
   const { rows } = await pool.query(
     `SELECT id, email, is_admin AS "isAdmin", created_at AS "createdAt"
-     FROM users ORDER BY created_at DESC`,
+     FROM users ORDER BY created_at DESC`
   );
   return rows;
 }
@@ -46,7 +46,7 @@ export async function listUsers(): Promise<UserListItem[]> {
  */
 export async function updateUser(
   id: string,
-  dto: UserUpdateDTO,
+  dto: UserUpdateDTO
 ): Promise<UserProfile> {
   const fields: string[] = [];
   const values: any[] = [];
