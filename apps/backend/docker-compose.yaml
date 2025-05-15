@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: printaid_db
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./migrations:/migrations
+    ports:
+      - "${DB_PORT}:5432"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: printaid_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app:cached
+      - ./public/uploads:/usr/src/app/public/uploads
+    ports:
+      - "3000:3000"
+    command: sh -c "chmod +x ./migrate.sh && ./migrate.sh up && npm start"
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /src/src
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package-lock.json
+
+  # Test service for isolated testing
+  # test:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.test
+  #   container_name: printaid_test
+  #   env_file:
+  #     - .env.test
+  #   environment:
+  #     NODE_ENV: test
+  #   depends_on:
+  #     - db
+  #   volumes:
+  #     - .:/usr/src/app:cached
+  #   command: npm test
+
+volumes:
+  db_data:
