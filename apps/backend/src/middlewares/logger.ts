@@ -7,7 +7,8 @@ export const loggerMiddleware = (
   _: Response,
   next: NextFunction,
 ) => {
-  const msg = `${new Date().toISOString()} ${req.method} ${req.url}\n`;
+  const code = _.statusCode;
+  const msg = `${new Date().toISOString()} ${req.method} ${req.url} ${code}\n`;
   fs.appendFileSync("logs/server.log", msg);
   next();
 };
