@@ -406,3 +406,4 @@
 2025-05-16T02:02:25.375Z POST /api/playground/email 200
 2025-05-16T02:03:09.796Z GET /admin/resources/products 200
 2025-05-16T02:03:09.852Z GET /admin/frontend/assets/components.bundle.js 200
+2025-05-16T02:07:02.057Z GET /api/products/search?q=draw 200

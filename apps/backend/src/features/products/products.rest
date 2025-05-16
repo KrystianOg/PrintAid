@@ -7,3 +7,5 @@
 GET {{baseUrl}}/products/{{id}}
 
 ###
+
+GET {{baseUrl}}/products/search?q=draw
