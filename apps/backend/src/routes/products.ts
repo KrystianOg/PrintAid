@@ -1,4 +1,5 @@
 import {
+  fullTextSearch,
   getProduct,
   listProducts,
   updateProduct,
@@ -19,6 +20,15 @@ const router = Router();
 
 router.get("/", async (_req, res) => {
   const products = await listProducts();
+
+  res.status(200).json(products);
+});
+
+router.get("/search", async (req, res) => {
+  // TODO: change this
+  const q = req.query.q as string;
+
+  const products = await fullTextSearch(q);
 
   res.status(200).json(products);
 });

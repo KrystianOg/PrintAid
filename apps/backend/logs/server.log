@@ -380,3 +380,10 @@
 2025-05-16T00:31:25.117Z GET /admin/api/resources/products/actions/list
 2025-05-16T00:31:26.901Z GET /admin/api/resources/products/records/9bac71ce-dfdb-4b10-a55d-402c0d37f42f/show
 2025-05-16T00:31:38.244Z GET /api/products/9bac71ce-dfdb-4b10-a55d-402c0d37f42f
+2025-05-16T00:35:23.273Z GET /
+2025-05-16T00:43:00.964Z GET /admin/resources/products/records/9bac71ce-dfdb-4b10-a55d-402c0d37f42f/show
+2025-05-16T00:43:01.075Z GET /admin/frontend/assets/components.bundle.js
+2025-05-16T00:43:01.964Z GET /admin/frontend/assets/logo.svg
+2025-05-16T00:43:03.229Z GET /admin/api/resources/product_media/actions/list
+2025-05-16T00:43:03.231Z GET /admin/api/resources/products/actions/search
+2025-05-16T00:43:04.117Z GET /admin/api/resources/products/actions/list

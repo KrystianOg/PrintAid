@@ -2,6 +2,24 @@ import { pool } from "../../lib/db.js";
 import type { Product } from "../../types/db.js";
 import { NotFoundError } from "../../utils/errors.js";
 
+type FullTextProduct = Pick<Product, "id" | "title" | "description">;
+
+export async function fullTextSearch(
+  search: string,
+): Promise<FullTextProduct[]> {
+  const { rows } = await pool.query<FullTextProduct>(
+    `
+SELECT id, title, description
+FROM products
+WHERE tsv @@ plainto_tsquery('english', $1)
+ORDER BY ts_rank(tsv, plainto_tsquery('english',$1)) DESC;
+`,
+    [search],
+  );
+
+  return rows;
+}
+
 export async function getProduct(id: string): Promise<Product> {
   const { rows } = await pool.query<Product>(
     `
