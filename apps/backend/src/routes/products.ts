@@ -11,6 +11,7 @@ import path from "path";
 import sharp from "sharp";
 import fs from "fs";
 import { pool } from "../lib/db.js";
+import { uploadsPath } from "../index.js";
 
 const upload = multer({ dest: "temp_uploads/" });
 
@@ -47,7 +48,7 @@ router.patch<{ id: string }>(
     const updated = await updateProduct(id, req.body);
 
     res.status(200).json(updated);
-  }
+  },
 );
 
 // TODO: split this into smaller parts
@@ -63,7 +64,7 @@ router.post<{ productId: string }>(
     for (const file of files) {
       const ext = path.extname(file.originalname);
       const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}${ext}`;
-      const outputPath = path.join("public/uploads", fileName);
+      const outputPath = path.join(uploadsPath, fileName);
 
       if (file.mimetype.startsWith("image/")) {
         await sharp(file.path).resize(800).toFile(outputPath);
@@ -72,15 +73,15 @@ router.post<{ productId: string }>(
       }
 
       await pool.query(
-        `INSERT INTO product_media (product_id, media_type, file_path) VALUES ($1, $2)`,
-        [productId, file.mimetype, outputPath]
+        `INSERT INTO product_media (product_id, media_type, file_path) VALUES ($1, $2, $3)`,
+        [productId, file.mimetype, outputPath],
       );
 
       uploaded.push(`/public/uploads/${fileName}`);
     }
 
     res.json({ success: true, files: uploaded });
-  }
+  },
 );
 
 export default router;

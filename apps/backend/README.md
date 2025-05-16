@@ -1,3 +1,7 @@
+## Features
+
+- Fulltext search
+
 ## Setting up database
 
 create .env file
