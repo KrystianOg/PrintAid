@@ -25,38 +25,38 @@ setup: ## Initial setup - copy environment files
 
 dev: ## Start development environment
 	@echo "$(YELLOW)Starting development environment...$(RESET)"
-	@export NODE_ENV=development && docker-compose up -d
+	@export NODE_ENV=development && docker compose up -d
 	@echo "$(GREEN)Development environment started$(RESET)"
 	@make logs-medusa
 
 prod: ## Start production environment
 	@echo "$(YELLOW)Starting production environment...$(RESET)"
-	@export NODE_ENV=production && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+	@export NODE_ENV=production && docker compose -f docker compose.yml -f docker compose.prod.yml up -d
 	@echo "$(GREEN)Production environment started$(RESET)"
 
 staging: ## Start staging environment
 	@echo "$(YELLOW)Starting staging environment...$(RESET)"
-	@export NODE_ENV=staging && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+	@export NODE_ENV=staging && docker compose -f docker compose.yml -f docker compose.prod.yml up -d
 	@echo "$(GREEN)Staging environment started$(RESET)"
 
 build: ## Build all images
 	@echo "$(YELLOW)Building images...$(RESET)"
-	@docker-compose build --no-cache
+	@docker compose build --no-cache
 	@echo "$(GREEN)Build complete$(RESET)"
 
 build-dev: ## Build development image
 	@echo "$(YELLOW)Building development image...$(RESET)"
-	@export BUILD_TARGET=development && docker-compose build medusa
+	@export BUILD_TARGET=development && docker compose build medusa
 	@echo "$(GREEN)Development build complete$(RESET)"
 
 build-prod: ## Build production image
 	@echo "$(YELLOW)Building production image...$(RESET)"
-	@export BUILD_TARGET=runtime && docker-compose build medusa
+	@export BUILD_TARGET=runtime && docker compose build medusa
 	@echo "$(GREEN)Production build complete$(RESET)"
 
 down: ## Stop all services
 	@echo "$(YELLOW)Stopping all services...$(RESET)"
-	@docker-compose down
+	@docker compose down
 	@echo "$(GREEN)Services stopped$(RESET)"
 
 clean: ## Stop services and remove volumes
@@ -64,7 +64,7 @@ clean: ## Stop services and remove volumes
 	@read -p "Are you sure? [y/N] " -n 1 -r; \
 	if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
 		echo ""; \
-		docker-compose down -v --remove-orphans; \
+		docker compose down -v --remove-orphans; \
 		docker system prune -f; \
 		echo "$(GREEN)Cleanup complete$(RESET)"; \
 	else \
@@ -73,24 +73,24 @@ clean: ## Stop services and remove volumes
 	fi
 
 logs: ## Show logs for all services
-	@docker-compose logs -f
+	@docker compose logs -f
 
 logs-medusa: ## Show logs for medusa service only
-	@docker-compose logs -f medusa
+	@docker compose logs -f medusa
 
 logs-db: ## Show logs for postgres service only
-	@docker-compose logs -f postgres
+	@docker compose logs -f postgres
 
 shell: ## Open shell in medusa container
-	@docker-compose exec medusa sh
+	@docker compose exec medusa sh
 
 shell-db: ## Open postgres shell
-	@docker-compose exec postgres psql -U $$(grep POSTGRES_USER .env | cut -d '=' -f2) $$(grep POSTGRES_DB .env | cut -d '=' -f2)
+	@docker compose exec postgres psql -U $$(grep POSTGRES_USER .env | cut -d '=' -f2) $$(grep POSTGRES_DB .env | cut -d '=' -f2)
 
 backup: ## Backup database
 	@echo "$(YELLOW)Creating database backup...$(RESET)"
 	@mkdir -p ./backups
-	@docker-compose exec postgres pg_dump -U $$(grep POSTGRES_USER .env | cut -d '=' -f2) $$(grep POSTGRES_DB .env | cut -d '=' -f2) > ./backups/backup_$$(date +%Y%m%d_%H%M%S).sql
+	@docker compose exec postgres pg_dump -U $$(grep POSTGRES_USER .env | cut -d '=' -f2) $$(grep POSTGRES_DB .env | cut -d '=' -f2) > ./backups/backup_$$(date +%Y%m%d_%H%M%S).sql
 	@echo "$(GREEN)Backup created in ./backups/$(RESET)"
 
 restore: ## Restore database from backup
@@ -98,7 +98,7 @@ restore: ## Restore database from backup
 	@ls -la ./backups/*.sql 2>/dev/null || echo "No backups found"
 	@read -p "Enter backup filename: " backup_file; \
 	if [ -f "./backups/$$backup_file" ]; then \
-		docker-compose exec -T postgres psql -U $$(grep POSTGRES_USER .env | cut -d '=' -f2) $$(grep POSTGRES_DB .env | cut -d '=' -f2) < "./backups/$$backup_file"; \
+		docker compose exec -T postgres psql -U $$(grep POSTGRES_USER .env | cut -d '=' -f2) $$(grep POSTGRES_DB .env | cut -d '=' -f2) < "./backups/$$backup_file"; \
 		echo "$(GREEN)Database restored$(RESET)"; \
 	else \
 		echo "$(RED)Backup file not found$(RESET)"; \
@@ -106,17 +106,17 @@ restore: ## Restore database from backup
 
 migrate: ## Run database migrations
 	@echo "$(YELLOW)Running migrations...$(RESET)"
-	@docker-compose exec medusa npm run migration:run
+	@docker compose exec medusa npm run migration:run
 	@echo "$(GREEN)Migrations complete$(RESET)"
 
 seed: ## Seed database
 	@echo "$(YELLOW)Seeding database...$(RESET)"
-	@docker-compose exec medusa npm run seed
+	@docker compose exec medusa npm run seed
 	@echo "$(GREEN)Database seeded$(RESET)"
 
 status: ## Show status of all services
-	@docker-compose ps
+	@docker compose ps
 
 health: ## Check health of all services
 	@echo "$(YELLOW)Service Health Status:$(RESET)"
-	@docker-compose ps --format "table {{.Name}}\t{{.Status}}\t{{.Ports}}"
+	@docker compose ps --format "table {{.Name}}\t{{.Status}}\t{{.Ports}}"
