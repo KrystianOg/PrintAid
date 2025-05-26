@@ -10,6 +10,12 @@ RUN yarn install --frozen-lockfile && yarn cache clean
 FROM base AS prod-deps
 RUN yarn install --frozen-lockfile --production && yarn cache clean
 
+FROM dev-deps AS development
+COPY . .
+
+EXPOSE 9000
+CMD ["yarn", "run", "dev"]
+
 FROM dev-deps AS builder
 COPY . .
 RUN yarn build
