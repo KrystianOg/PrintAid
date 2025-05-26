@@ -25,6 +25,7 @@ module.exports = defineConfig({
   },
   admin: {
     disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+    path: "/dashboard",
   },
   plugins: [
     {
@@ -52,6 +53,7 @@ module.exports = defineConfig({
               "handle",
               "variant_sku",
               "thumbnail",
+              "categories",
             ],
             indexSettings: {
               searchableAttributes: ["title", "description", "variant_sku"],
@@ -63,7 +65,7 @@ module.exports = defineConfig({
                 "variant_sku",
                 "thumbnail",
               ],
-              filterableAttributes: ["id", "handle"],
+              filterableAttributes: ["id", "handle", "categories.handle"],
             },
             primaryKey: "id",
             // Create your own transformer
@@ -119,20 +121,20 @@ module.exports = defineConfig({
         ],
       },
     },
-    {
-      resolve: "@medusajs/medusa/notification",
-      options: {
-        providers: [
-          {
-            resolve: "@medusajs/medusa/notification-local",
-            id: "local",
-            options: {
-              channels: ["email"],
-            },
-          },
-        ],
-      },
-    },
+    // {
+    //   resolve: "@medusajs/medusa/notification",
+    //   options: {
+    //     providers: [
+    //       {
+    //         resolve: "@medusajs/medusa/notification-local",
+    //         id: "local",
+    //         options: {
+    //           channels: ["email"],
+    //         },
+    //       },
+    //     ],
+    //   },
+    // },
     {
       resolve: "@medusajs/medusa/payment",
       options: {
@@ -142,6 +144,22 @@ module.exports = defineConfig({
             id: "stripe",
             options: {
               apiKey: process.env.STRIPE_API_KEY,
+            },
+          },
+        ],
+      },
+    },
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          {
+            resolve: "./src/modules/resend",
+            id: "resend",
+            options: {
+              channels: ["email"],
+              api_key: process.env.RESEND_API_KEY,
+              from: process.env.RESEND_FROM_EMAIL,
             },
           },
         ],
