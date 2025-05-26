@@ -95,6 +95,14 @@ services:
       - "${MEDUSA_PORT:-9000}:${MEDUSA_PORT:-9000}"
     networks:
       - medusa_network
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+          ignore: ["node_modules", "uploads", "logs"]
+        - action: rebuild
+          path: package.json
     depends_on:
       migrations:
         condition: service_completed_successfully
