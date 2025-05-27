@@ -80,6 +80,9 @@ module.exports = defineConfig({
   ],
   modules: [
     {
+      resolve: "./src/modules/hello",
+    },
+    {
       resolve: "@medusajs/medusa/cache-redis",
       options: {
         redisUrl: process.env.REDIS_URL,

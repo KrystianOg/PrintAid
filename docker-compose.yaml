@@ -49,26 +49,26 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-
-  migrations:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-      target: development
-    container_name: ${COMPOSE_PROJECT_NAME:-medusa}_migrations
-    command: sh -c "yarn medusa db:migrate"
-    env_file:
-      - .env
-      - .env.${NODE_ENV:-development}
-    environment:
-      NODE_ENV: ${NODE_ENV:-development}
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
-      DB_SSL: false
-    networks:
-      - medusa_network
-    depends_on:
-      postgres:
-        condition: service_healthy
+  #
+  # migrations:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #     target: development
+  #   container_name: ${COMPOSE_PROJECT_NAME:-medusa}_migrations
+  #   command: sh -c "yarn medusa db:migrate"
+  #   env_file:
+  #     - .env
+  #     - .env.${NODE_ENV:-development}
+  #   environment:
+  #     NODE_ENV: ${NODE_ENV:-development}
+  #     DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+  #     DB_SSL: false
+  #   networks:
+  #     - medusa_network
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
 
   medusa:
     build:
@@ -104,8 +104,8 @@ services:
         - action: rebuild
           path: package.json
     depends_on:
-      migrations:
-        condition: service_completed_successfully
+      # migrations:
+      #   condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
