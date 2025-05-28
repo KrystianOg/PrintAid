@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
+import { Text } from "@/components/Text";
 import { typography, spacing, useLightDark, colors } from "@/constants/theme";
 import { ProductCartItem } from "@/types/products";
 

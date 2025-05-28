@@ -7,10 +7,10 @@ import {
   RefreshControl,
   ScrollView,
   View,
-  Text,
   Pressable,
   FlatList,
 } from "react-native";
+import { Text } from "@/components/Text";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import type { ProductListItem } from "@/types/products";
 import { spacing, typography } from "@/constants/theme";

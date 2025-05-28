@@ -14,7 +14,7 @@ export const pl = {
   },
   home: {
     banner: "Witamy w aplikacji!",
-    browseProducts: "Przegldaj produkty",
+    browseProducts: "Przeglądaj produkty",
     shopByCategory: "Zakupy według kategorii",
     popular: "Popularne",
   },

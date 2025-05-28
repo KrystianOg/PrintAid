@@ -1,7 +1,7 @@
 import { StyleProp, TextStyle, useColorScheme, ViewStyle } from "react-native";
 
 export function useLightDark<Key extends keyof typeof colors>(
-  key: Key
+  key: Key,
 ): (typeof colors)[Key] {
   const colorScheme = useColorScheme();
 
@@ -11,7 +11,7 @@ export function useLightDark<Key extends keyof typeof colors>(
 export const colors = {
   primary: "#005A9C",
   secondary: "#03DAC6",
-  background: "#F6F6F6",
+  background: "#FFFFFF",
   surface: "#FFFFFF",
   white: "#ffffff",
   error: "#B00020",

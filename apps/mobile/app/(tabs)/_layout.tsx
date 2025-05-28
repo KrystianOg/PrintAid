@@ -37,6 +37,9 @@ export default function Layout() {
   return (
     <Tabs
       screenOptions={{
+        sceneStyle: {
+          backgroundColor: useLightDark("background"),
+        },
         tabBarActiveTintColor: useLightDark("primary"),
         headerShown: false,
         tabBarStyle: {
@@ -58,6 +61,7 @@ export default function Layout() {
           }}
         />
       ))}
+      <Tabs.Screen name="products/[id]" options={{ href: null }} />
     </Tabs>
   );
 }

@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
 import {
   Pressable,
   RefreshControl,
   ScrollView,
-  Text,
   View,
   StyleSheet,
   FlatList,
+  Image,
 } from "react-native";
+import { Text, Link } from "@/components";
 // import { Alert, LogBox, Platform } from "react-native";
 // import { StatusBar } from "expo-status-bar";
 // import * as Device from "expo-device";
@@ -15,94 +15,93 @@ import {
 // import { loadAsync } from "expo-font";
 import { useTranslation } from "react-i18next";
 
-import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import { Link } from "expo-router";
 import { colors, globalStyles, typography } from "@/constants/theme";
+import { useQuery } from "@tanstack/react-query";
+import { getPopularProducts, getCategories } from "@/lib/medusa";
+import { useRouter } from "expo-router";
 
 export default function Index() {
   const { t } = useTranslation("home");
-  const [refreshing, setRefreshing] = useState(false);
-  const [categories, setCategories] = useState<string[]>([]);
+  const router = useRouter();
 
-  const [popular, setPopular] = useState<string[]>([]);
+  const categories = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
 
-  useEffect(() => {
-    setTimeout(() => {
-      setCategories([
-        "Category 1",
-        "Category 2",
-        "Category 3",
-        "Category 4",
-        "Category 5",
-      ]);
-      setPopular([
-        "Popular 1",
-        "Popular 2",
-        "Popular 3",
-        "Popular 4",
-        "Popular 5",
-      ]);
-    }, 800);
-  }, []);
+  const popular = useQuery({
+    queryKey: ["popular"],
+    queryFn: getPopularProducts,
+  });
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+  const isFetching = categories.isFetching || popular.isFetching;
+
+  const onRefresh = () => {
+    void categories.refetch();
+    void popular.refetch();
+  };
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
-        <ScrollView
-          contentContainerStyle={globalStyles.flex}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <View style={styles.banner}>
-            <Text style={styles.bannerText}>{t("banner")}</Text>
-          </View>
+    <ScrollView
+      contentContainerStyle={[globalStyles.flex]}
+      refreshControl={
+        <RefreshControl refreshing={isFetching} onRefresh={onRefresh} />
+      }
+    >
+      <View style={styles.banner}>
+        <Text style={styles.bannerText}>{t("banner")}</Text>
+      </View>
 
-          <Link href="/browse" style={typography.h6}>
-            {t("browseProducts")}
-          </Link>
+      <Link href="/browse" style={typography.h6}>
+        {t("browseProducts")}
+      </Link>
 
-          {/* FIXME: this is repeated */}
-          <View>
-            <Text style={styles.sectionText}>{t("shopByCategory")}</Text>
-            <FlatList
-              data={categories}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.listContainer}
-              keyExtractor={(item) => item}
-              renderItem={(item) => (
-                <Pressable style={styles.listItem}>
-                  <Text>{item.item}</Text>
-                </Pressable>
-              )}
-            />
-          </View>
-          <View>
-            <Text style={styles.sectionText}>{t("popular")}</Text>
-            <FlatList
-              data={popular}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.listContainer}
-              keyExtractor={(item) => item}
-              renderItem={(item) => (
-                <Pressable style={styles.listItem}>
-                  <Text>{item.item}</Text>
-                </Pressable>
-              )}
-            />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+      {/* FIXME: this is repeated */}
+      <View>
+        <Text style={styles.sectionText}>{t("shopByCategory")}</Text>
+        <FlatList
+          data={categories.data}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+          keyExtractor={(category) => category.id}
+          renderItem={({ item: category }) => (
+            <Pressable
+              style={styles.listItem}
+              onPress={() => {
+                router.navigate(`/categories/${category.id}`);
+              }}
+            >
+              <Text>{category.name}</Text>
+            </Pressable>
+          )}
+        />
+      </View>
+      <View>
+        <Text style={styles.sectionText}>{t("popular")}</Text>
+        <FlatList
+          data={popular.data}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item: product }) => (
+            <Pressable
+              style={styles.listItem}
+              onPress={() => {
+                router.navigate(`/products/${product.id}`);
+              }}
+            >
+              <Image
+                source={{ uri: product.images?.[0].url }}
+                width={100}
+                height={100}
+              />
+            </Pressable>
+          )}
+        />
+      </View>
+    </ScrollView>
   );
 }
 

@@ -1,5 +1,6 @@
 // import { useCart } from "@/stores/cart";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
+import { Text } from "@/components";
 import { CartItem } from "@/components/CartItem";
 import { useTranslation } from "react-i18next";
 import { formatCurrency } from "@/utils/currency";

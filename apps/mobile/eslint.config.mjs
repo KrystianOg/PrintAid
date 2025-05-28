@@ -6,6 +6,7 @@ import prettierConfig from "eslint-config-prettier";
 import tsPlugin from "typescript-eslint";
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -22,6 +23,7 @@ export default tseslint.config(
   reactPlugin.configs.flat.recommended,
   reactPlugin.configs.flat["jsx-runtime"],
   tsPlugin.configs.recommended,
+  pluginQuery.configs["flat/recommended"],
   {
     plugins: {
       react: reactPlugin,
