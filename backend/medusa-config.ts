@@ -2,6 +2,9 @@ import { loadEnv, defineConfig } from "@medusajs/framework/utils";
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
+console.log("admin cors", process.env.ADMIN_CORS);
+console.log("auth cors", process.env.AUTH_CORS);
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
@@ -24,7 +27,8 @@ module.exports = defineConfig({
     },
   },
   admin: {
-    disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+    // disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+    disable: true,
     path: "/dashboard",
   },
   plugins: [

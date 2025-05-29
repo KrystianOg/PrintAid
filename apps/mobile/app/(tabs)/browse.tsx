@@ -1,5 +1,5 @@
 import { Button } from "@/components/Button";
-import { StyleSheet } from "react-native";
+import { Dimensions, Image, StyleSheet, TextInput } from "react-native";
 import { Link } from "expo-router";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -12,15 +12,28 @@ import {
 } from "react-native";
 import { Text } from "@/components/Text";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import type { ProductListItem } from "@/types/products";
 import { spacing, typography } from "@/constants/theme";
-import { useFetch } from "@/hooks/useFetch";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts, search } from "@/lib/medusa";
+import { SearchBar } from "@/components/Search";
+
+const { width: screenWidth } = Dimensions.get("screen");
 
 export default function Browse() {
   const { t } = useTranslation("browse");
   const [refreshing, setRefreshing] = useState(false);
 
-  const { data: products } = useFetch<ProductListItem[]>("/products");
+  const { data: products } = useQuery({
+    queryFn: getProducts,
+    queryKey: ["products"],
+  });
+
+  const { data: searchResult, refetch } = useQuery({
+    queryFn: search,
+    queryKey: ["search"],
+  });
+
+  const onSearch = (q: string) => { };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -33,10 +46,11 @@ export default function Browse() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
         <View>
           <Text style={typography.h5}>{t("search")}</Text>
         </View>
+        <SearchBar onSearch={onSearch} />
         <ScrollView
           horizontal
           contentContainerStyle={styles.categoriesContainer}
@@ -67,9 +81,14 @@ export default function Browse() {
               }}
               style={styles.gridItem}
             >
-              <Text>{product.name}</Text>
-              <Text>{product.description}</Text>
-              <Text>{product.name}</Text>
+              <Image
+                source={{ uri: product.images?.[0].url }}
+                width={180}
+                height={180}
+                style={{ borderRadius: 16 }}
+              />
+              <Text style={{}}>{product.title}</Text>
+              <Text>{product.handle}</Text>
             </Link>
           )}
           keyExtractor={(item, index) => index.toString()}

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   Image,
+  Dimensions,
 } from "react-native";
 import { Text, Link } from "@/components";
 // import { Alert, LogBox, Platform } from "react-native";
@@ -19,6 +20,8 @@ import { colors, globalStyles, typography } from "@/constants/theme";
 import { useQuery } from "@tanstack/react-query";
 import { getPopularProducts, getCategories } from "@/lib/medusa";
 import { useRouter } from "expo-router";
+
+const { width: screenWidth } = Dimensions.get("screen");
 
 export default function Index() {
   const { t } = useTranslation("home");
@@ -94,8 +97,8 @@ export default function Index() {
             >
               <Image
                 source={{ uri: product.images?.[0].url }}
-                width={100}
-                height={100}
+                width={screenWidth / 2 - 32}
+                height={screenWidth / 2 - 32}
               />
             </Pressable>
           )}
@@ -121,9 +124,9 @@ const styles = StyleSheet.create({
   listItem: {
     alignItems: "center",
     backgroundColor: colors.gray,
-    height: 100,
+    height: screenWidth / 2 - 32,
     justifyContent: "center",
-    width: 100,
+    width: screenWidth / 2 - 32,
   },
   sectionText: {
     ...typography.h5,

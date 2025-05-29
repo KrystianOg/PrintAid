@@ -16,6 +16,12 @@ export const getPopularProducts = async () => {
   return res.products;
 };
 
+export const getProducts = async () => {
+  const res = await sdk.store.product.list();
+
+  return res.products;
+};
+
 export const getProduct = async (id: string) => {
   const res = await sdk.store.product.retrieve(id);
 
@@ -26,4 +32,14 @@ export const getCategories = async () => {
   const res = await sdk.store.category.list();
 
   return res.product_categories;
+};
+
+export const search = async (searchString: string) => {
+  const res = await sdk.client.fetch("/store/search", {
+    query: {
+      s: searchString,
+    },
+  });
+
+  return res;
 };
