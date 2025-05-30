@@ -1,0 +1,148 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Allow manual triggers
+    inputs:
+      deployment_slot:
+        description: "Deployment slot (blue/green)"
+        required: false
+        default: "auto"
+        type: choice
+        options:
+          - auto
+          - blue
+          - green
+
+env:
+  DOCKER_REGISTRY: ${{ secrets.VPS_HOST }}:5000
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  build:
+    name: Build and Push Images
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+      image_digest: ${{ steps.build.outputs.digest }}
+
+    steps:
+      - name: Generate .env from template
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          envsubst < .env.template > .env
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate image metadata
+        id: meta
+        run: |
+          # Create a unique tag based on git commit and timestamp
+          TIMESTAMP=${date + "%Y%m%d-%H%M%S"}
+          COMMIT_SHORT=$(git rev-parse --short HEAD)
+          IMAGE_TAG="${COMMIT_SHORT}-${TIMESTAMP}"
+
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
+          echo "tags${REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "labels=org.opencontainers.image.revision=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+
+          echo "latest_tag=${REGISTRY_URL}/${IMAGE_NAME}:latest" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
+
+      - name: Login to VPS Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY_URL }}
+          username: ${{secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ steps.meta.outputs.latest_tag }}
+          labels: ${{ steps.meta.outputs.labels }}
+          target: production
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_VERSION=24
+
+  deploy:
+    name: Rolling Deployment
+    runs-on: ubuntu-latest
+    needs: build
+    environment: production
+
+    steps:
+      - name: Checkout deployment scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docker-compose.prod.yaml
+            scripts/
+          sparse-checkout-cone-mode: false
+
+      - name: Setup SSH Connection
+        run: |
+          # Configure SSH for secure connection to VPS
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Determine deployment slot
+        id: slot
+        run: |
+          if [ "${{ github.event.inputs.deployment_slot }}" != "auto"] && [ "${{ github.event.inputs.deployment_slot }}" != ""]; then
+            SLOT="${{github.event.inputs.deployment_slot}}"
+          else
+            CURRENT_SLOT=$(ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@{{secrets.VPS_HOST}} \
+              "cd /apps/medusa && docker-compose -f docker-compose.prod.yaml ps --services --filter 'status=running' | head -1 | grep -1 'blue\|green' || echo 'blue'")
+
+            if [ "$CURRENT_SLOT" = "blue"]; then
+              SLOT="green"
+            else
+              SLOT="blue"
+            fi
+          fi
+
+          echo "DEPLOYMENT_SLOT=${SLOT}" >> $GITHUB_ENV
+          echo "deployment_slot=${SLOT}" >> $GITHUB_OUTPUT
+          echo "Deploying to slot: ${SLOT}"
+
+      - name: Deploy new version
+        run: |
+          echo "TODO: deploying new version"
+
+      - name: Update routing priority
+        run: |
+          echo "TODO: updating routing priority"
+
+      - name: Verify deployment
+        run: |
+          echo "TODO: verify deployment"
+
+      - name: Cleanup old version
+        if: success()
+        run: |
+          echo "TODO: cleanup old version"

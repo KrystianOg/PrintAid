@@ -2,4 +2,6 @@
 .env
 !.env.template
 .env*.local
+.env.production
+.env.development
 images/
