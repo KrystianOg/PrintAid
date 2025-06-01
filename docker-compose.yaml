@@ -49,26 +49,29 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-  #
-  # migrations:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #     target: development
-  #   container_name: ${COMPOSE_PROJECT_NAME:-medusa}_migrations
-  #   command: sh -c "yarn medusa db:migrate"
-  #   env_file:
-  #     - .env
-  #     - .env.${NODE_ENV:-development}
-  #   environment:
-  #     NODE_ENV: ${NODE_ENV:-development}
-  #     DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
-  #     DB_SSL: false
-  #   networks:
-  #     - medusa_network
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
+
+  migrations:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: ${COMPOSE_PROJECT_NAME:-medusa}_migrations
+    command: sh -c "yarn medusa db:migrate"
+    env_file:
+      - .env
+      - .env.${NODE_ENV:-development}
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${MEDUSA_PORT:-9000}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      REDIS_URL: "redis://:${REDIS_PASSWORD?}@redis:6379"
+    networks:
+      - medusa_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   medusa:
     build:
@@ -89,6 +92,7 @@ services:
       NODE_ENV: ${NODE_ENV:-development}
       PORT: ${MEDUSA_PORT:-9000}
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      REDIS_URL: "redis://:${REDIS_PASSWORD?}@redis:6379"
     volumes:
       - medusa_uploads:/app/uploads
     ports:
@@ -104,8 +108,8 @@ services:
         - action: rebuild
           path: package.json
     depends_on:
-      # migrations:
-      #   condition: service_completed_successfully
+      migrations:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
@@ -146,14 +150,16 @@ services:
 
   meilisearch:
     image: getmeili/meilisearch:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-medusa}_meilisearch
     ports:
       - "7700:7700"
     volumes:
       - ~/data.ms:/data.ms
     environment:
-      - MEILI_MASTER_KEY=ms
+      - MEILISEARCH_HOST=${MEILISEARCH_HOST?}
+      - MEILI_MASTER_KEY=${MEILISEARCH_API_KEY?}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7700"]
+      test: ["CMD", "curl", "-f", "${MEILISEARCH_HOST}"]
       interval: 10s
       timeout: 5s
       retries: 5

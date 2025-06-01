@@ -19,8 +19,8 @@ module.exports = defineConfig({
       storeCors: process.env.STORE_CORS!,
       adminCors: process.env.ADMIN_CORS!,
       authCors: process.env.AUTH_CORS!,
-      jwtSecret: process.env.JWT_SECRET || "supersecret",
-      cookieSecret: process.env.COOKIE_SECRET || "supersecret",
+      jwtSecret: process.env.JWT_SECRET!,
+      cookieSecret: process.env.COOKIE_SECRET!,
     },
   },
   admin: {
@@ -33,8 +33,8 @@ module.exports = defineConfig({
       resolve: "@rokmohar/medusa-plugin-meilisearch",
       options: {
         config: {
-          host: process.env.MEILISEARCH_HOST ?? "",
-          apiKey: process.env.MEILISEARCH_API_KEY ?? "",
+          host: process.env.MEILISEARCH_HOST,
+          apiKey: process.env.MEILISEARCH_API_KEY,
         },
         settings: {
           products: {
@@ -114,7 +114,7 @@ module.exports = defineConfig({
               file_url: process.env.S3_FILE_URL,
               access_key_id: process.env.S3_ACCESS_KEY_ID,
               secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
-              // region: process.env.S3_REGION,
+              region: process.env.S3_REGION,
               bucket: process.env.S3_BUCKET,
               endpoint: process.env.S3_ENDPOINT,
               additional_client_config: {

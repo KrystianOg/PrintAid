@@ -187,6 +187,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
   storefront:
     build:
       context: ./storefront
