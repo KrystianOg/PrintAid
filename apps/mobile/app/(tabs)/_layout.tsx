@@ -62,6 +62,7 @@ export default function Layout() {
         />
       ))}
       <Tabs.Screen name="products/[id]" options={{ href: null }} />
+      <Tabs.Screen name="categories/[id]" options={{ href: null }} />
     </Tabs>
   );
 }

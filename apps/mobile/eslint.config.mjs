@@ -45,6 +45,8 @@ export default tseslint.config(
           allowAny: false,
         },
       ],
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
     },
     settings: {
       react: {

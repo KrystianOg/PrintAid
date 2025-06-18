@@ -1,64 +1,50 @@
-import { Button } from "@/components/Button";
-import { Image, StyleSheet } from "react-native";
-import { Link } from "expo-router";
-import { useCallback, useState } from "react";
+import { useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
   RefreshControl,
-  ScrollView,
   View,
-  Pressable,
   FlatList,
+  Image,
+  StyleSheet,
+  Dimensions,
 } from "react-native";
-import { Text } from "@/components/Text";
+import { Link } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { spacing, typography } from "@/constants/theme";
 import { useQuery } from "@tanstack/react-query";
-import { sdk } from "@/lib/medusa";
+
+import { Text } from "@/components/Text";
+import { Button } from "@/components/Button";
 import { SearchBar } from "@/components/Search";
+import { sdk } from "@/lib/medusa";
+import { spacing } from "@/constants/theme";
 
-export default function Browse() {
+// const { width: screenWidth } = Dimensions.get("screen");
+
+export default function CategoryDetail() {
+  const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation("browse");
-  const [refreshing, setRefreshing] = useState(false);
 
-  const { data: products } = useQuery({
-    queryFn: sdk.product.list,
-    queryKey: ["products"],
-  });
-
-  const { data: searchResult, refetch } = useQuery({
-    queryFn: () => sdk.search(),
-    queryKey: ["search"],
+  const {
+    data: category,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryFn: () => sdk.category.byId(id),
+    queryKey: ["category", id],
   });
 
   const onSearch = (q: string) => {};
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
-
-  const categories = ["Category 1", "Category 2", "Category 3"];
+  const products = category?.product_category.products;
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }}>
-        <View>
-          <Text style={typography.h5}>{t("search")}</Text>
-        </View>
+        {/* <View>
+          <Text style={typography.h5}>Category {id}</Text>
+        </View> */}
         <SearchBar onSearch={onSearch} />
-        <ScrollView
-          horizontal
-          contentContainerStyle={styles.categoriesContainer}
-        >
-          {categories.map((category, i) => (
-            <Pressable key={i} style={styles.categoryItem}>
-              <Text>{category}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
+
         <View style={styles.ctaGroup}>
           <Button title={t("filter")} kind="cta" />
           <Button title={t("sort")} kind="cta" />
@@ -66,12 +52,14 @@ export default function Browse() {
 
         <FlatList
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={isLoading}
+              onRefresh={() => void refetch()}
+            />
           }
           numColumns={2}
           data={products}
           renderItem={({ item: product }) => (
-            // TODO: extract this to a component
             <Link
               href={{
                 pathname: "/products/[id]",
@@ -80,12 +68,12 @@ export default function Browse() {
               style={styles.gridItem}
             >
               <Image
-                source={{ uri: product.images?.[0].url }}
+                source={{ uri: product.images?.[0]?.url }}
                 width={180}
                 height={180}
                 style={{ borderRadius: 16 }}
               />
-              <Text style={{}}>{product.title}</Text>
+              <Text>{product.title}</Text>
               <Text>{product.handle}</Text>
             </Link>
           )}
@@ -99,15 +87,6 @@ export default function Browse() {
 }
 
 const styles = StyleSheet.create({
-  categoriesContainer: {
-    gap: 10,
-  },
-  categoryItem: {
-    alignItems: "center",
-    height: 20,
-    justifyContent: "center",
-    width: 100,
-  },
   ctaGroup: {
     flexDirection: "row",
     gap: 10,
@@ -117,7 +96,6 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   gridItem: {
-    // FIXME: extract this and this part to component
     alignItems: "center",
     height: 250,
     justifyContent: "center",

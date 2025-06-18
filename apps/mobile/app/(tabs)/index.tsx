@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 
 import { colors, globalStyles, typography } from "@/constants/theme";
 import { useQuery } from "@tanstack/react-query";
-import { getPopularProducts, getCategories } from "@/lib/medusa";
+import { sdk } from "@/lib/medusa";
 import { useRouter } from "expo-router";
 
 const { width: screenWidth } = Dimensions.get("screen");
@@ -29,19 +29,19 @@ export default function Index() {
 
   const categories = useQuery({
     queryKey: ["categories"],
-    queryFn: getCategories,
+    queryFn: () => sdk.category.list(),
   });
 
-  const popular = useQuery({
-    queryKey: ["popular"],
-    queryFn: getPopularProducts,
+  const featured = useQuery({
+    queryKey: ["featured"],
+    queryFn: () => sdk.collection.byHandle("featured"),
   });
 
-  const isFetching = categories.isFetching || popular.isFetching;
+  const isFetching = categories.isFetching || featured.isFetching;
 
   const onRefresh = () => {
     void categories.refetch();
-    void popular.refetch();
+    void featured.refetch();
   };
 
   return (
@@ -63,27 +63,28 @@ export default function Index() {
       <View>
         <Text style={styles.sectionText}>{t("shopByCategory")}</Text>
         <FlatList
-          data={categories.data}
+          data={categories.data?.product_categories}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.listContainer}
           keyExtractor={(category) => category.id}
           renderItem={({ item: category }) => (
-            <Pressable
+            <Link
               style={styles.listItem}
-              onPress={() => {
-                router.navigate(`/categories/${category.id}`);
+              href={{
+                pathname: "/categories/[id]",
+                params: { id: category.id },
               }}
             >
               <Text>{category.name}</Text>
-            </Pressable>
+            </Link>
           )}
         />
       </View>
       <View>
         <Text style={styles.sectionText}>{t("popular")}</Text>
         <FlatList
-          data={popular.data}
+          data={featured.data?.products}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.listContainer}
@@ -96,7 +97,7 @@ export default function Index() {
               }}
             >
               <Image
-                source={{ uri: product.images?.[0].url }}
+                source={{ uri: product.thumbnail ?? undefined }}
                 width={screenWidth / 2 - 32}
                 height={screenWidth / 2 - 32}
               />

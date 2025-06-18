@@ -1,54 +1,30 @@
 import { useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  Dimensions,
-  Alert,
-} from "react-native";
-import {
-  colors,
-  globalStyles,
-  typography,
-  useLightDark,
-} from "@/constants/theme";
+import { View, StyleSheet, Image, ScrollView, Alert } from "react-native";
+import { Text } from "@/components";
+import { globalStyles, typography } from "@/constants/theme";
 // import { formatCurrency } from "@/utils/currency";
 import { useQuery } from "@tanstack/react-query";
-import { getProduct } from "@/lib/medusa";
+import { sdk } from "@/lib/medusa";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-
-const { width: screenWidth } = Dimensions.get("window");
 
 export default function ProductDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation(["product", "common"]);
-  // const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
-  // theme
-  const backgroundColor = useLightDark("background");
-  const surfaceColor = useLightDark("surface");
-  const textColor = useLightDark("text");
-  const primaryColor = useLightDark("primary");
-
-  const {
-    data: product,
-    // isLoading,
-    // error,
-  } = useQuery({
-    queryFn: () => getProduct(id),
+  const { data } = useQuery({
+    queryFn: () => sdk.product.retrieve(id),
     queryKey: ["product", id],
   });
 
+  const product = data?.product;
+
   const handleAddToCart = () => {
     Alert.alert(
-      t("addToCart", { ns: "common" }),
-      t("productAddedToCart", { ns: common }),
-      [{ text: t("ok", { ns: "common" }), style: "default" }],
-      { cancelable: true },
+      t("addToCart"),
+      t("productAddedToCart"),
+      [{ text: t("ok"), style: "default" }],
+      { cancelable: true }
     );
   };
 
@@ -64,9 +40,6 @@ export default function ProductDetail() {
   //   ? formatCurrency(i18n.language).format(amount)
   //   : undefined;
   //
-  const image = product.images?.[0].url;
-
-  console.info("image", image);
 
   return (
     <SafeAreaProvider>
@@ -74,7 +47,11 @@ export default function ProductDetail() {
         <ScrollView>
           <View style={styles.container}>
             <Text style={styles.typo}>{product.title}</Text>
-            <Image source={{ uri: image }} width={300} height={300} />
+            <Image
+              source={{ uri: product.thumbnail ?? undefined }}
+              width={300}
+              height={300}
+            />
             {/* 
         {!!formattedPrice && (
           <Text style={styles.typo}>

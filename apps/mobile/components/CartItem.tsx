@@ -37,16 +37,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.primary,
     borderRadius: 8,
-    height: spacing(5.5),
+    height: spacing.lg,
     justifyContent: "center",
-    marginTop: spacing(2),
-    width: spacing(5.5),
+    marginTop: spacing.sm,
+    width: spacing.lg,
   },
   buttonGroup: {
     display: "flex",
     flexDirection: "row",
-    gap: spacing(1),
-    paddingHorizontal: spacing(2.5),
+    gap: spacing.sm,
+    paddingHorizontal: spacing.md,
   },
   container: {
     borderBottomColor: colors.gray,
@@ -56,9 +56,9 @@ const styles = StyleSheet.create({
   },
   name: {
     flex: 1,
-    padding: spacing(2.5),
+    padding: spacing.sm,
   },
   quantityContainer: {
-    padding: spacing(2.5),
+    padding: spacing.sm,
   },
 });
