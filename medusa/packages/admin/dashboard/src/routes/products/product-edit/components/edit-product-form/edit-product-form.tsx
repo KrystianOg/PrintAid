@@ -13,6 +13,8 @@ import { transformNullableFormData } from "../../../../../lib/form-helpers";
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form";
 import { FormExtensionZone } from "../../../../../dashboard-app";
 import { useExtension } from "../../../../../providers/extension-provider";
+import Tiptap from "../../../../../components/tiptap/Tiptap";
+import ProductDescriptionEditor from "../../../../../components/tiptap/product-editor";
 
 type EditProductFormProps = {
   product: HttpTypes.AdminProduct;
@@ -96,6 +98,9 @@ const EditProductSchema = zod.object({
   airDehumidification: zod.boolean(),
   brand: zod.enum(brands),
 });
+
+// FIXME: remove this
+let globalDescription = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`;
 
 export const EditProductForm = ({ product }: EditProductFormProps) => {
   const { t } = useTranslation();
@@ -300,6 +305,8 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
                   );
                 }}
               />
+              {/* <Tiptap /> */}
+              <ProductDescriptionEditor />
             </div>
             <hr />
             <div style={{ display: "grid", gap: "1rem" }}>
