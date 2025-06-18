@@ -1,0 +1,14 @@
+node_modules/
+dist/
+
+.env
+!.env.example
+.env*.local
+
+.adminjs
+.vscode/
+logs/
+
+# static files
+/public/uploads/*
+!/public/uploads/.gitkeep

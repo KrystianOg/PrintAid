@@ -1,0 +1,187 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-medusa}_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    networks:
+      - medusa_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  redis:
+    image: redis:7-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-medusa}_redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD} --maxmemory ${REDIS_MAX_MEMORY:-256mb} --maxmemory-policy noeviction
+    volumes:
+      - redis_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    networks:
+      - medusa_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  migrations:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: ${COMPOSE_PROJECT_NAME:-medusa}_migrations
+    command: sh -c "yarn medusa db:migrate"
+    env_file:
+      - .env
+      - .env.${NODE_ENV:-development}
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${MEDUSA_PORT:-9000}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      REDIS_URL: "redis://:${REDIS_PASSWORD?}@redis:6379"
+    networks:
+      - medusa_network
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  medusa:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: ${BUILD_TARGET:-development}
+      args:
+        NODE_VERSION: ${NODE_VERSION:-24}
+    container_name: ${COMPOSE_PROJECT_NAME:-medusa}_backend
+    restart: unless-stopped
+    working_dir: /app
+    # user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    env_file:
+      - .env
+      - .env.${NODE_ENV:-development}
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${MEDUSA_PORT:-9000}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      REDIS_URL: "redis://:${REDIS_PASSWORD?}@redis:6379"
+    volumes:
+      - medusa_uploads:/app/uploads
+    ports:
+      - "${MEDUSA_PORT:-9000}:${MEDUSA_PORT:-9000}"
+    networks:
+      - medusa_network
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+          ignore: ["node_modules", "uploads", "logs"]
+        - action: rebuild
+          path: package.json
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      meilisearch:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  minio:
+    image: minio/minio:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-medusa}_minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address ":9001"
+    ports:
+      - "${MINIO_PORT:-9002}:9000" # S3 API
+      - "${MINIO_CONSOLE_PORT:-9003}:9001" # MinIO Console
+    volumes:
+      - minio_data:/data
+    networks:
+      - medusa_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-medusa}_meilisearch
+    ports:
+      - "7700:7700"
+    volumes:
+      - ~/data.ms:/data.ms
+    environment:
+      - MEILISEARCH_HOST=${MEILISEARCH_HOST?}
+      - MEILI_MASTER_KEY=${MEILISEARCH_API_KEY?}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "${MEILISEARCH_HOST}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - medusa_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  medusa_node_modules:
+    driver: local
+  medusa_uploads:
+    driver: local
+  minio_data:
+    driver: local
+
+networks:
+  medusa_network:
+    driver: bridge
+    name: ${COMPOSE_PROJECT_NAME:-medusa}_network

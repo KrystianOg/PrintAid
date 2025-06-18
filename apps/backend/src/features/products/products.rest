@@ -1,0 +1,11 @@
+@baseUrl= http://localhost:3000/api
+
+###
+
+@id = 9bac71ce-dfdb-4b10-a55d-402c0d37f42f
+
+GET {{baseUrl}}/products/{{id}}
+
+###
+
+GET {{baseUrl}}/products/search?q=draw
