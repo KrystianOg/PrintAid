@@ -67,6 +67,7 @@ services:
       REDIS_URL: "redis://:${REDIS_PASSWORD?}@redis:6379"
     networks:
       - medusa_network
+    restart: "no"
     depends_on:
       postgres:
         condition: service_healthy
@@ -80,7 +81,6 @@ services:
       target: ${BUILD_TARGET:-development}
       args:
         NODE_VERSION: ${NODE_VERSION:-24}
-    image: ${COMPOSE_PROJECT_NAME:-medusa}/backend:${IMAGE_TAG:-latest}
     container_name: ${COMPOSE_PROJECT_NAME:-medusa}_backend
     restart: unless-stopped
     working_dir: /app
