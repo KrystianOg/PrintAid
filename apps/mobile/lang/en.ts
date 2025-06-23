@@ -28,6 +28,7 @@ export const en = {
     price: "Price",
     addToCart: "Add to Cart",
     category: "Category",
+    license: "License",
     similar: "Similar Products",
     related: "Related Products",
     realizationTime: "Realization Time",
@@ -37,6 +38,7 @@ export const en = {
     total: "Total",
     checkout: "Checkout",
     subtotal: "Subtotal",
+    quantity: "Quantity",
   },
   settings: {
     title: "Settings",

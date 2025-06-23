@@ -6,6 +6,24 @@ import CartIcon from "@/assets/icons/lucide--shopping-cart.svg";
 import SettingsIcon from "@/assets/icons/lucide--settings.svg";
 import BrowseIcon from "@/assets/icons/lucide--search.svg";
 import { useLightDark } from "@/constants/theme";
+import { View } from "react-native";
+import { Text } from "@/components";
+import { useCart } from "@/hooks/useCart";
+import { ComponentProps } from "react";
+
+const CartIconWithCount = (props: ComponentProps<typeof CartIcon>) => {
+  const { state } = useCart();
+  return (
+    <View style={{ position: "relative" }}>
+      <CartIcon {...props} />
+      {state.itemCount && (
+        <Text style={{ position: "absolute", right: 14, top: -12 }}>
+          {state.itemCount}
+        </Text>
+      )}
+    </View>
+  );
+};
 
 // TODO: test if all images are properly loading
 export default function Layout() {
@@ -25,7 +43,7 @@ export default function Layout() {
     {
       name: "cart",
       title: t("cart"),
-      Icon: CartIcon,
+      Icon: CartIconWithCount,
     },
     {
       name: "settings",

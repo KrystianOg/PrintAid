@@ -1,5 +1,13 @@
 import { medusaSdk } from ".";
 
+declare module "@medusajs/types" {
+  interface StoreProductCategory {
+    metadata?: {
+      thumbnail?: string | undefined;
+    };
+  }
+}
+
 const byHandle = async (handle: string) => {
   const res = await medusaSdk.store.category.list({
     handle,

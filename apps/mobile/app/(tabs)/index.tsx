@@ -1,5 +1,4 @@
 import {
-  Pressable,
   RefreshControl,
   ScrollView,
   View,
@@ -7,6 +6,7 @@ import {
   FlatList,
   Image,
   Dimensions,
+  Pressable,
 } from "react-native";
 import { Text, Link } from "@/components";
 // import { Alert, LogBox, Platform } from "react-native";
@@ -16,16 +16,14 @@ import { Text, Link } from "@/components";
 // import { loadAsync } from "expo-font";
 import { useTranslation } from "react-i18next";
 
-import { colors, globalStyles, typography } from "@/constants/theme";
+import { colors, globalStyles, spacing, typography } from "@/constants/theme";
 import { useQuery } from "@tanstack/react-query";
 import { sdk } from "@/lib/medusa";
-import { useRouter } from "expo-router";
 
 const { width: screenWidth } = Dimensions.get("screen");
 
 export default function Index() {
   const { t } = useTranslation("home");
-  const router = useRouter();
 
   const categories = useQuery({
     queryKey: ["categories"],
@@ -46,20 +44,12 @@ export default function Index() {
 
   return (
     <ScrollView
-      contentContainerStyle={[globalStyles.flex]}
+      contentContainerStyle={[globalStyles.flex, styles.screen]}
       refreshControl={
         <RefreshControl refreshing={isFetching} onRefresh={onRefresh} />
       }
     >
-      <View style={styles.banner}>
-        <Text style={styles.bannerText}>{t("banner")}</Text>
-      </View>
-
-      <Link href="/browse" style={typography.h6}>
-        {t("browseProducts")}
-      </Link>
-
-      {/* FIXME: this is repeated */}
+      {/* <Image source={{uri: }}/> */}
       <View>
         <Text style={styles.sectionText}>{t("shopByCategory")}</Text>
         <FlatList
@@ -70,12 +60,20 @@ export default function Index() {
           keyExtractor={(category) => category.id}
           renderItem={({ item: category }) => (
             <Link
-              style={styles.listItem}
+              style={{ width: 100, height: 100 }}
               href={{
                 pathname: "/categories/[id]",
                 params: { id: category.id },
               }}
             >
+              <Image
+                style={{ borderRadius: spacing.md }}
+                source={{
+                  uri: category.metadata?.thumbnail ?? undefined,
+                }}
+                width={screenWidth / 2 - 32}
+                height={screenWidth / 2 - 32}
+              />
               <Text>{category.name}</Text>
             </Link>
           )}
@@ -90,18 +88,25 @@ export default function Index() {
           contentContainerStyle={styles.listContainer}
           keyExtractor={(item) => item.id}
           renderItem={({ item: product }) => (
-            <Pressable
-              style={styles.listItem}
-              onPress={() => {
-                router.navigate(`/products/${product.id}`);
+            <Link
+              href={{
+                pathname: "/products/[id]",
+                params: { id: product.id },
               }}
+              asChild
             >
-              <Image
-                source={{ uri: product.thumbnail ?? undefined }}
-                width={screenWidth / 2 - 32}
-                height={screenWidth / 2 - 32}
-              />
-            </Pressable>
+              <Pressable style={styles.productCard}>
+                <Image
+                  source={{
+                    uri: product.thumbnail ?? undefined,
+                  }}
+                  style={styles.productImage}
+                />
+                <Text style={styles.productTitle} numberOfLines={2}>
+                  {product.title}
+                </Text>
+              </Pressable>
+            </Link>
           )}
         />
       </View>
@@ -110,15 +115,6 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  banner: {
-    height: 200,
-    width: "100%",
-  },
-  bannerText: {
-    ...typography.h5,
-    marginTop: 50,
-    textAlign: "center",
-  },
   listContainer: {
     gap: 10,
   },
@@ -128,6 +124,26 @@ const styles = StyleSheet.create({
     height: screenWidth / 2 - 32,
     justifyContent: "center",
     width: screenWidth / 2 - 32,
+  },
+  productCard: {
+    marginRight: 16,
+    width: screenWidth / 2 - 32,
+  },
+  productImage: {
+    backgroundColor: colors.white,
+    borderRadius: spacing.sm,
+    height: screenWidth / 2 - 32,
+    width: screenWidth / 2 - 32,
+  },
+  productTitle: {
+    color: colors.grayLight,
+    fontSize: 14,
+    fontWeight: "500",
+    lineHeight: 18,
+    marginTop: 8,
+  },
+  screen: {
+    padding: spacing.md,
   },
   sectionText: {
     ...typography.h5,

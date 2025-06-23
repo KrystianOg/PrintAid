@@ -19,7 +19,3 @@ export type ProductListItem = Pick<
   Product,
   "id" | "name" | "prices" | "description" | "image"
 >;
-
-export type ProductCartItem = ProductListItem & {
-  quantity: number;
-};

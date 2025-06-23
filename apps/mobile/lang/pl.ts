@@ -29,6 +29,7 @@ export const pl = {
     price: "Cena",
     addToCart: "Dodaj do koszyka",
     category: "Kategoria",
+    license: "Licencja",
     similar: "Podobne produkty",
     related: "Powiązane produkty",
     realizationTime: "Czas realizacji",
@@ -38,6 +39,7 @@ export const pl = {
     total: "Razem",
     checkout: "Zamówienie",
     subtotal: "Suma częściowa",
+    quantity: "Ilość",
   },
   settings: {
     title: "Ustawienia",

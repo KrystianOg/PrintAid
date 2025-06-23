@@ -1,3 +1,4 @@
+import { StoreProduct } from "@medusajs/types";
 import { medusaSdk } from ".";
 
 // FIXME: typesafe this
@@ -8,5 +9,5 @@ export const search = async (searchString: string) => {
     },
   });
 
-  return res;
+  return res as StoreProduct[];
 };

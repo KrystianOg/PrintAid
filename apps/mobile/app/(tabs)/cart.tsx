@@ -5,39 +5,28 @@ import { CartItem } from "@/components/CartItem";
 import { useTranslation } from "react-i18next";
 import { formatCurrency } from "@/utils/currency";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ProductCartItem } from "@/types/products";
 import { typography } from "@/constants/theme";
+import { useCart } from "@/hooks/useCart";
+import { useQuery } from "@tanstack/react-query";
+import { sdk } from "@/lib/medusa";
 
 export default function Cart() {
   const { t, i18n } = useTranslation("cart");
-  // const { items } = useCart();
-  const items: ProductCartItem[] = [
-    {
-      id: "1",
-      name: "Product 1",
-      prices: [
-        {
-          amount: 10.99,
-          currency: "PLN",
-        },
-        {
-          amount: 2.99,
-          currency: "EUR",
-        },
-      ],
-      quantity: 1,
-      description: "Description 1",
-      image: "https://via.placeholder.com/150",
-    },
-  ];
+
+  const { state } = useCart();
+
+  const q = useQuery({
+    queryFn: () => sdk.product.list(),
+    queryKey: ["product"],
+  });
 
   return (
     <SafeAreaProvider>
       <SafeAreaView>
         <View>
-          {items.length ? (
+          {state.items.length ? (
             <FlatList
-              data={items}
+              data={state.items}
               renderItem={({ item }) => <CartItem item={item} />}
             />
           ) : (
